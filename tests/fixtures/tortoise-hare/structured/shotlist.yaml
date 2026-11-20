@@ -1,0 +1,408 @@
+schema_version: 1
+panels:
+  - id: start-line-showoff
+    beat: watch-showoff
+    shot: wide
+    angle: eye-level
+    tilt_deg: 0.0
+    set: meadow-course
+    description: At the checkered start line, the Hare stretches showily and flashes his chunky 
+      watch at cheering onlookers while the small Tortoise chats beside him; an onlooker raises the 
+      starting flag.
+    characters:
+      - character: hare
+        pose: stretching-showily
+        expression: smug
+        facing: viewer
+        placement:
+          x: 0.35
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Holds his wrist up so everyone can see the Racer-Pacer 5000.
+      - character: tortoise
+        pose: standing
+        expression: friendly-greeting
+        facing: right
+        placement:
+          x: 0.55
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Chats pleasantly with a neighbor.
+      - character: onlookers
+        pose: waving-pennants
+        expression: cheering
+        facing: left
+        placement:
+          x: 0.8
+          y: 0.88
+          scale: 1.0
+          depth: -1
+        action: Cheer behind the low fence; one holds the starting flag.
+    props:
+      - prop: racer-pacer-watch
+        held_by: hare
+      - prop: starting-flag
+        held_by: onlookers
+    text:
+      - kind: speech
+        text: 'Behold: the Keeper-Asleeper Racer-Pacer 5000!'
+        speaker: hare
+        order: 0
+      - kind: caption
+        text: The big race. And one very fancy watch.
+        order: 1
+    weight: 2
+  - id: wake-me-command
+    beat: nap-armed
+    transition: action-to-action
+    shot: medium
+    angle: eye-level
+    tilt_deg: 0.0
+    set: meadow-course
+    description: Far ahead, the Hare lounges on the grass under the big oak and speaks into his 
+      watch, which shows 'Alarm set ✓'.
+    characters:
+      - character: hare
+        pose: talking-into-watch
+        expression: smug
+        facing: right
+        placement:
+          x: 0.45
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Leans back under the oak, wrist raised to his mouth.
+    props:
+      - prop: racer-pacer-watch
+        screen: alarm-armed
+        held_by: hare
+    text:
+      - kind: speech
+        text: Wake me up when I can still win this race!
+        speaker: hare
+        order: 0
+      - kind: device
+        text: Alarm set ✓
+        speaker: racer-pacer-watch
+        order: 1
+    weight: 1
+  - id: tortoise-strolls-by
+    beat: tortoise-passes
+    transition: action-to-action
+    shot: wide
+    angle: eye-level
+    tilt_deg: 0.0
+    set: meadow-course
+    description: The Hare snores under the oak while the Tortoise plods past on the path, waving to 
+      onlookers who point and giggle at the sleeper.
+    characters:
+      - character: hare
+        pose: napping
+        expression: sleeping
+        facing: right
+        placement:
+          x: 0.25
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Snores in the shade, watch silent.
+      - character: tortoise
+        pose: waving-to-onlookers
+        expression: friendly-greeting
+        facing: right
+        placement:
+          x: 0.55
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Waves as he passes the sleeping Hare.
+      - character: onlookers
+        pose: pointing
+        expression: giggling
+        facing: left
+        placement:
+          x: 0.8
+          y: 0.88
+          scale: 1.0
+          depth: -1
+        action: Point at the napping Hare and giggle.
+    props:
+      - prop: racer-pacer-watch
+        held_by: hare
+    text:
+      - kind: sfx
+        text: ZZZ...
+        order: 0
+      - kind: speech
+        text: Lovely day for it!
+        speaker: tortoise
+        order: 1
+    weight: 1
+  - id: wrist-buzzes
+    beat: watch-buzzes
+    transition: subject-to-subject
+    shot: wide
+    angle: eye-level
+    tilt_deg: 0.0
+    set: meadow-course
+    description: In the distance on the right, the Tortoise nears the striped finish banner; in the 
+      foreground left, the sleeping Hare's wrist buzzes loudly.
+    characters:
+      - character: hare
+        pose: napping
+        expression: sleeping
+        facing: right
+        placement:
+          x: 0.25
+          y: 0.92
+          scale: 1.0
+          depth: 0
+        action: Still asleep as his watch buzzes.
+      - character: tortoise
+        pose: plodding
+        expression: serene
+        facing: right
+        placement:
+          x: 0.78
+          y: 0.7
+          scale: 0.6
+          depth: -1
+        action: Plods steadily toward the finish banner.
+    props:
+      - prop: racer-pacer-watch
+        held_by: hare
+    text:
+      - kind: sfx
+        text: BZZZT!
+        order: 0
+    weight: 1
+  - id: sprint-now-screen
+    beat: rule-revealed
+    transition: subject-to-subject
+    shot: insert
+    angle: eye-level
+    tilt_deg: 0.0
+    set: meadow-course
+    description: "The watch face fills the panel: 'SPRINT NOW!' over two finish-time bars, Hare @ max
+      4:58 just barely shorter than Tortoise @ avg 5:00, 'Margin: 0:02'."
+    characters: []
+    props:
+      - prop: racer-pacer-watch
+        screen: win-window-alarm
+        held_by: hare
+    text:
+      - kind: device
+        text: SPRINT NOW! Hare @ max 4:58 vs Tortoise @ avg 5:00
+        speaker: racer-pacer-watch
+        order: 0
+      - kind: caption
+        text: Right on time. Two seconds to spare.
+        order: 1
+    weight: 3
+  - id: neck-and-neck
+    beat: the-sprint
+    transition: scene-to-scene
+    shot: medium
+    angle: eye-level
+    tilt_deg: 0.0
+    set: finish-line
+    description: On the road to the finish, the Hare blurs in at full speed, pulling nearly level 
+      with the plodding Tortoise as onlookers lean in and gasp.
+    characters:
+      - character: hare
+        pose: sprinting
+        expression: determined
+        facing: right
+        placement:
+          x: 0.4
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Sprints at max pace with speed lines behind him.
+      - character: tortoise
+        pose: plodding
+        expression: serene
+        facing: right
+        placement:
+          x: 0.58
+          y: 0.9
+          scale: 1.0
+          depth: 1
+        action: Keeps plodding, unbothered.
+      - character: onlookers
+        pose: leaning-in
+        expression: gasping
+        facing: left
+        placement:
+          x: 0.82
+          y: 0.85
+          scale: 1.0
+          depth: -1
+        action: Lean over the rope fence, gasping.
+    props:
+      - prop: racer-pacer-watch
+        held_by: hare
+    text:
+      - kind: sfx
+        text: ZOOM!
+        order: 0
+    weight: 2
+  - id: ad-covers-watch
+    beat: ad-pops
+    transition: action-to-action
+    shot: medium
+    angle: eye-level
+    tilt_deg: 0.0
+    set: finish-line
+    description: "Mid-stride, the Hare's watch buzzes again: a Racer-Pacer ad for Hare-Sneakers covers
+      the whole screen with a big Shop button and a tiny x."
+    characters:
+      - character: hare
+        pose: sprinting-while-tapping-watch
+        expression: frantic
+        facing: right
+        placement:
+          x: 0.45
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Glances down at his wrist while running.
+    props:
+      - prop: racer-pacer-watch
+        screen: sneaker-ad
+        held_by: hare
+    text:
+      - kind: device
+        text: NEW Hare-Sneakers! 20% off
+        speaker: racer-pacer-watch
+        order: 0
+      - kind: shout
+        text: Not NOW!
+        speaker: hare
+        order: 1
+    weight: 1
+  - id: wheres-the-x
+    beat: fumble
+    transition: action-to-action
+    shot: medium
+    angle: eye-level
+    tilt_deg: 0.0
+    set: finish-line
+    description: The Hare loses his stride jabbing at the tiny x and hits Shop instead; the Tortoise
+      inches ahead toward the ribbon.
+    characters:
+      - character: hare
+        pose: sprinting-while-tapping-watch
+        expression: frantic
+        facing: right
+        placement:
+          x: 0.38
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Slows and wobbles while stabbing at his watch.
+      - character: tortoise
+        pose: plodding
+        expression: serene
+        facing: right
+        placement:
+          x: 0.62
+          y: 0.9
+          scale: 1.0
+          depth: 1
+        action: Inches ahead, steady as ever.
+    props:
+      - prop: racer-pacer-watch
+        screen: sneaker-ad
+        held_by: hare
+    text:
+      - kind: speech
+        text: Where's the x?! WHERE'S THE X?!
+        speaker: hare
+        order: 0
+      - kind: sfx
+        text: tap-tap
+        order: 1
+    weight: 1
+  - id: tortoise-breaks-ribbon
+    beat: tortoise-wins
+    transition: action-to-action
+    shot: medium
+    angle: eye-level
+    tilt_deg: 0.0
+    set: finish-line
+    description: The Tortoise breaks the red ribbon by a nose as onlookers leap and cheer; just 
+      behind, the Hare slumps.
+    characters:
+      - character: hare
+        pose: slumped-at-finish
+        expression: dismayed
+        facing: right
+        placement:
+          x: 0.3
+          y: 0.9
+          scale: 1.0
+          depth: 0
+        action: Arrives a step too late.
+      - character: tortoise
+        pose: crossing-finish-line
+        expression: mildly-surprised
+        facing: right
+        placement:
+          x: 0.55
+          y: 0.9
+          scale: 1.0
+          depth: 1
+        action: Breaks the ribbon, pleasantly surprised.
+      - character: onlookers
+        pose: jumping-celebrating
+        expression: celebrating
+        facing: left
+        placement:
+          x: 0.8
+          y: 0.86
+          scale: 1.0
+          depth: -1
+        action: Jump and cheer behind the rope.
+    props:
+      - prop: finish-ribbon
+      - prop: racer-pacer-watch
+        held_by: hare
+    text:
+      - kind: speech
+        text: Oh! Did I win?
+        speaker: tortoise
+        order: 0
+    weight: 2
+  - id: shop-now
+    beat: ad-still-there
+    transition: moment-to-moment
+    shot: close-up
+    angle: eye-level
+    tilt_deg: 0.0
+    set: finish-line
+    description: The deflated Hare stares at his wrist, where the Racer-Pacer cheerfully shows a 
+      sneaker shopping page.
+    characters:
+      - character: hare
+        pose: slumped-at-finish
+        expression: dismayed
+        facing: right
+        placement:
+          x: 0.45
+          y: 0.92
+          scale: 1.0
+          depth: 0
+        action: Stares silently at the watch.
+    props:
+      - prop: racer-pacer-watch
+        screen: sneaker-ad
+        held_by: hare
+    text:
+      - kind: device
+        text: Run faster in Hare-Sneakers! Shop now?
+        speaker: racer-pacer-watch
+        order: 0
+    weight: 1

@@ -1,0 +1,11 @@
+{% from "_shared/yaml_block.j2" import block %}
+{{ block("Character profile", character) }}
+{{ block("Palettes and pens", style) }}
+
+# Model sheet reference (match this)
+
+```svg
+{{ model_svg }}
+```
+
+Draw `{{ item[0] }}` in pose **{{ pose }}** with expression **{{ expression }}**.

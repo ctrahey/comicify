@@ -1,0 +1,84 @@
+schema_version: 1
+id: mid-century
+name: Mid-Century Modern (UPA)
+summary: '1950s limited-animation style: angular geometric figures, muted flat color fields offset from
+  the linework, textured blocks, minimal stylized backgrounds.'
+sources:
+  - Amid Amidi, Cartoon Modern (2006)
+  - UPA, Gerald McBoing-Boing (1950)
+prompts: []
+abstraction: cartoon
+line:
+  weight_px: 3.0
+  uniform: false
+  color: '#2B2B2B'
+color:
+  max_colors: 7
+  flat: true
+  anchors:
+    - '#D9A441'
+    - '#2E7D7A'
+    - '#D95D39'
+    - '#8C9A5B'
+    - '#F2E8CF'
+    - '#2B2B2B'
+  guidance: Muted flats; color shapes deliberately misaligned from the outlines.
+shading: Dry-brush texture on flats; paper grain; fills offset from lines.
+lettering:
+  dialogue:
+    family: Fredoka
+    weight: 400
+    size: 29.0
+    uppercase: false
+  caption:
+    family: Fredoka
+    weight: 600
+    size: 25.0
+    uppercase: false
+  sfx:
+    family: Fredoka
+    weight: 600
+    size: 60.0
+    uppercase: false
+  title:
+    family: Fredoka
+    weight: 600
+    size: 64.0
+    uppercase: false
+  device:
+    family: Fredoka
+    weight: 600
+    size: 24.0
+    uppercase: false
+  balloon: ellipse
+  balloon_fill: '#FFF9EC'
+  caption_fill: '#F2E8CF'
+  stroke_px: 2.5
+  tail: straight
+  caption_style: plain
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#D95D39'
+    outline_px: 0.0
+    halo_px: 0.0
+    shadow: '#2B2B2B'
+    shadow_px: 3.0
+    max_rotation_deg: 10.0
+    scale: 1.0
+panel:
+  border_px: 2.0
+  corner_radius_px: 0.0
+  paper: '#F2E8CF'
+  ink: '#2B2B2B'
+effects:
+  - kind: misregister
+    dx_px: 6.0
+    dy_px: 4.0
+    color: '#D9A441'
+    opacity: 0.25
+  - kind: grain
+    opacity: 0.12
+    frequency: 0.7
+svg_notes: Triangular and rectangular bodies; offset each fill shape a few units from its outline; 
+  stylized flat perspective.

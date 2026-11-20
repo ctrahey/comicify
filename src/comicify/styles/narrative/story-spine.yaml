@@ -1,0 +1,38 @@
+schema_version: 1
+id: story-spine
+name: Pixar Story Spine
+summary: Kenn Adams' fill-in-the-blank structure, popularized by Pixar, that forces a causal chain 
+  from routine to change.
+sources:
+  - Kenn Adams, How to Improvise a Full-Length Play (2007)
+  - "Emma Coats, 'Pixar's 22 Rules of Storytelling', rule #4 (2011)"
+prompts:
+  - stage: story
+    text: "`because-of-that` may be filled by up to three consecutive beats, each caused by the previous
+      one. Captions may echo the spine phrases ('Every day…', 'Until one day…')."
+slots:
+  - id: once-upon-a-time
+    purpose: Who and where
+    share: 0.1
+  - id: every-day
+    purpose: 'The routine: the current workflow'
+    share: 0.15
+  - id: until-one-day
+    purpose: The disruption
+    share: 0.15
+  - id: because-of-that
+    purpose: Causal consequences; may repeat 1–3 times
+    share: 0.3
+  - id: until-finally
+    purpose: The climax and resolution
+    share: 0.15
+  - id: ever-since
+    purpose: 'The new routine: the after state'
+    share: 0.15
+panels:
+  min: 6
+  max: 12
+suits:
+  - pitch
+  - before-after
+  - explainer

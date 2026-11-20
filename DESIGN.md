@@ -49,20 +49,24 @@ example-A-tortoise-hare/
     cast.yaml                  # who's in it (index)
     characters/{hare,tortoise}.yaml
     sets/meadow.yaml
-    props/watch.yaml
-    style.yaml                 # palettes, pens, typography (fonts), line weights
+    props.yaml                 # all props, incl. subject-product devices
     shotlist.yaml              # panels: full content minus page layout
     comic.yaml                 # pages, grids, panel placement, reading flow
-  assets/                      # frozen art, with provenance sidecars
-    characters/hare/sheet.svg  # <symbol> per pose / expression
-    sets/meadow/bg-wide.png
-    props/watch/screen-*.svg
-    fonts/*.ttf                # bundled, license-checked (OFL etc.)
+    composition.yaml           # per panel: camera, figures, every letter's box/tail/break
+    direction.yaml             # chosen narrative / cinematography / art (+ why)
+    packs/                     # vendored narrative + cinematography packs
+    looks/<art>/art.yaml       # vendored art pack
+    looks/<art>/style.yaml     # palettes and pens for this look
+  assets/<art>/                # frozen art per look; lineage in the manifest
+    characters/hare/model.svg              # model-sheet reference (neutral pose)
+    characters/hare/napping--sleeping.svg  # one file per (pose, expression) used
+    sets/meadow.svg                        # wide backdrop
+    props/watch.svg
+    fonts/comic-neue/*.ttf + OFL.txt       # bundled, open-licensed
   .comicify/
     manifest.yaml              # digests & lineage (see "Staleness") — tracked
     cache/                     # LLM response cache — gitignored
-  rendered/
-    v1/ ...                    # renderer outputs; tracking optional
+  rendered/<art>/vN/           # pages (svg/png), comic.pdf, render.json
 ```
 
 ## Pipeline
@@ -72,7 +76,9 @@ prompt.md + revisions/ + sessions/
         │
    [evaluate] ──► [clarify ⟲ author Q&A] ──► sessions/*-clarify.md
         │
-   [brief] ─┬─► [product]
+   [brief] ──► [direction] ──► [packs]
+      │
+      ├─► [product]
             ├─► [story] ──► [cast] ──► [character ×N]
             ├─► [style]
             └─► [sets/props]
@@ -218,6 +224,98 @@ comicify assets  <project>             # generate missing/stale assets only
 comicify render  <project> [--backend svg,png,pdf,html] [--fonts outline|embed|system] [--page 2] [--panel 5]
 comicify review  <project>             # vision critique → proposed revision file
 ```
+
+## Direction: mix-and-match style layers
+
+Three independent axes, each a typed **pack** (`src/comicify/styles/<axis>/<id>.yaml`,
+or a project's own `styles/<axis>/<id>.yaml`). Packs are data the code enforces,
+plus prompt fragments for specific stages — not just system prompts.
+
+| Axis | Shapes | Enforced by code |
+|---|---|---|
+| **narrative** (10: three-act, kishōtenketsu, story spine, PAS, BAB, rule of three, in medias res, story circle, yonkoma, Freytag) | story beats | every beat has a `slot`; slots filled in order (story integrity check) |
+| **cinematography** (8: newspaper strip, nine-panel grid, manga dynamic, planimetric, film noir, widescreen, diagrammatic, documentary) | shot list, page grid, camera | grid policy and gutters (layout), Dutch-tilt limit (shot-list check), tilt and low/high angle framing (compose) |
+| **art** (13: clean cartoon, pop art, Opie minimal, superhero, Sunday funnies, Rockwell-inspired, ligne claire, manga screentone, xkcd, Risograph, corporate flat, mid-century, sketchnote) | style, drawings, render | lettering faces and balloon shapes, panel borders and paper, color-count limits (style check), render effects: halftone, grain, misregistration, monochrome, posterize, wobble |
+
+**Direction is an intermediate, not configuration.** Clarification sees the
+catalogue: the evaluator states what the author's input decides or implies on
+each axis, an unchosen art style is a major concern, and the author is asked
+(with fitting catalogue options) about anything open. The `direction` stage
+records the choices, with rationale, in `structured/direction.yaml`; the
+chosen packs are **vendored** into `structured/packs/` and
+`structured/looks/<art>/`, so the intermediates alone reproduce the comic. To
+change the art style, edit `direction.yaml` (or add a revision) and re-render;
+there are deliberately no CLI flags or config keys for it. A hand-edited
+vendored pack is pinned like any other intermediate.
+
+When the clarification prompts change (e.g. new things to resolve), `author`
+notices the session's protocol version is outdated and re-clarifies, asking
+only what's open.
+
+**Art is a late, per-look layer.** The storyboard (brief → shot list → layout)
+is art-agnostic: characters describe colors in words, sets describe mood. Each
+look gets its own `style.yaml` (palettes and pens derived from the art pack)
+and `assets/<look>/`, and renders go to `rendered/<look>/vN/`. Trying another
+art style never regenerates the story, and switching back costs nothing.
+
+Pack traits come from a research pass (see each pack's `sources`); numeric
+traits (shot mixes, line weights, hex anchors) are informed estimates, meant
+to be tuned.
+
+## Composition and lettering
+
+Lettering is planned with the staging, not fitted into leftovers. Three layers
+each own one kind of decision, so a change request lands in exactly one place:
+
+| Layer | Owns | Examples of PM edits |
+|---|---|---|
+| **shot list** (what) | the words and their intent: `emphasis` (bold words), sfx `intensity` 1–3 and `speaker` (its source), `stance` per figure | "stress *still*", "make BZZZT the loudest moment" |
+| **cinematography** `lettering` (where/how much) | zone (top-band, edges, corners, free), speakers left-to-right, words per balloon (enforced on the shot list), headroom, frame breaks, caption placement | "let sound effects break the frame", "tighter dialogue" |
+| **art** `lettering` (how it looks) | balloon shape and tail style, caption treatment (box, bar, plain), emphasis weight, sfx styling (fill, outline, halo, extrusion, rotation limit) | "pop-art sound effects", "no balloons, xkcd lines" |
+
+The **composition** stage (`pipeline/composition.py`, code) solves each panel
+into `structured/composition.yaml` — art-style independent, panel-normalized,
+editable: camera framing; figures (restaged so the first speaker is on the
+left, lowered or pulled back to make headroom); and every letter's box, tail
+target, chaining (consecutive balloons from one speaker connect), rotation,
+and whether it breaks the frame. Placement is a cost search in reading order:
+near the speaker, Z-path order, never over another letter or a device screen,
+never over a figure's upper silhouette unless there's truly no air (and then
+it's noted). Balloon *shape* is a variable: the solver may wrap wider or
+narrower to fit the air. Every non-obvious decision is written to `notes`.
+
+**Layout is lettering-aware:** panels carrying heavy text are widened before
+packing. Insert shots arrange device and lettering by panel aspect.
+
+The renderer's **letterer** (`render/lettering.py`) draws the plan in the
+look's style; balloon shapes take the art's hand-drawn effects (wobble,
+misregistration) while text stays crisp; frame-breaking letters render on a
+page layer above all panels and gutters. Figure geometry is shared by solver
+and renderer (`render/geometry.py`), using structured facts: `stance` and the
+character's silhouette `width_ratio`.
+
+## Implementation notes (from the first tracer pass)
+
+- **Stage framework** (`pipeline/core.py`): a stage expands into jobs; each job
+  writes one file from declared inputs. The runner decides run / fresh / pinned
+  / untracked per job from the manifest, runs a stage's jobs concurrently, and
+  records lineage. LLM stages are declarative (`pipeline/llmstage.py`); layout
+  and fonts are code stages with the same contract.
+- **Integrity checks**: each LLM stage can declare cross-reference checks
+  (unknown cast ids, palette colors, screens, ...). Problems go back to the
+  model as a retry, so what reaches disk is schema-valid *and* referentially valid.
+- **LLM-facing schemas use lists of records, never open maps** (`dict[str, X]`):
+  constrained decoding can't express arbitrary keys and yields `{}`. Enforced by
+  `tests/test_schemas.py`.
+- **Character art = model sheet + per-pose drawings**: a neutral reference is
+  drawn first; each (pose, expression) the shot list uses is drawn against it,
+  as its own file and job — so a new pose costs one small call.
+- **Assets are standalone SVG on fixed canvases** (`svg.py`), validated (no
+  text, scripts, external refs) and inlined as namespaced `<symbol>`s.
+- **Rendering** = compose (`render/compose.py`, all layout decisions) → scene
+  graph (`render/scene.py`) → backends (`render/backends/`, registry). Missing
+  assets render as labeled placeholders, so `render --skip-assets` gives a
+  blocking pass. Screens are drawn deterministically from `product.yaml`.
 
 ## Implementation choices
 

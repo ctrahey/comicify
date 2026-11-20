@@ -1,0 +1,62 @@
+schema_version: 1
+id: tortoise
+name: The Tortoise
+personality:
+  - wise
+  - modest
+  - serene
+  - friendly and social
+  - steady and unhurried
+  - good sport
+motivation: He wants to be a good participant and enjoy the company of his meadow neighbors; winning
+  or losing doesn't trouble him, so he simply keeps moving forward.
+voice:
+  style: Slow, warm, and kindly; short, gentle sentences, often greeting neighbors rather than 
+    talking about the race.
+  sample_lines:
+    - Lovely morning for a stroll, isn't it?
+    - Hello, Mrs. Squirrel! How are the little ones?
+    - Oh, sleeping? I'll go quietly.
+    - Oh my, did I win? How nice.
+visual:
+  species: tortoise
+  abstraction: cartoon
+  relative_height: 0.45
+  silhouette: Low, rounded dome shell on four stubby legs with a small head poking forward on a 
+    short neck; reads as a gentle hump next to the tall, lanky Hare.
+  proportions: Wide and low, about 2 heads tall; big domed shell takes up most of the body, small 
+    round head with large calm eyes, short stubby legs.
+  colors:
+    - part: shell
+      color: olive green with darker brown hexagon segments
+    - part: skin (head, neck, legs)
+      color: muted sage green
+    - part: belly plate
+      color: pale cream
+    - part: eyes
+      color: dark brown with soft, half-lidded lids
+    - part: scarf
+      color: faded mustard yellow
+  distinguishing_features:
+    - Calm half-closed eyes and a small contented smile
+    - A few faint wrinkles around the eyes suggesting age and wisdom
+    - No watch or gadget of any kind, a clear contrast to the Hare
+    - Moves with one foot always mid-step, suggesting constant steady motion
+  costume: A simple race bib with the number 2 tied loosely to the front of his shell, slightly 
+    askew.
+  accessories:
+    - faded mustard-yellow knitted scarf
+    - race bib number 2
+expressions:
+  - serene
+  - content
+  - friendly-greeting
+  - mildly-surprised
+  - quietly-pleased
+poses:
+  - standing
+  - plodding
+  - waving-to-onlookers
+  - tiptoeing-past
+  - crossing-finish-line
+  - being-congratulated

@@ -1,0 +1,19 @@
+schema_version: 1
+id: finish-line
+name: The Finish Line
+description: "A sunny country dirt road runs from the left distance into the foreground and ends at a
+  finish line on the right: two wooden posts with a red ribbon stretched between them and a hand-painted
+  'FINISH' banner overhead. Low grassy verges on both sides hold a small crowd area behind a simple rope
+  fence, with a few bunting strings and a wooden scoreboard sign. Rolling green hills, a lone big oak,
+  and a few puffy clouds fill the background. The road surface in the lower third stays clear and open
+  for running characters."
+time_of_day: late afternoon
+mood: Bright, warm late-afternoon sun with long soft shadows; clear sky with a few fluffy clouds; 
+  festive and tense, like the last seconds of a village fair race.
+horizon: 0.5
+landmarks:
+  - the FINISH banner on two wooden posts
+  - the red finish ribbon across the road
+  - the rope fence lined with festive bunting where onlookers gather
+  - the big lone oak on the hill behind the finish
+  - the wooden scoreboard sign beside the finish

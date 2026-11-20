@@ -1,0 +1,23 @@
+schema_version: 1
+id: problem-agitate-solve
+name: Problem–Agitate–Solve
+summary: 'Copywriting formula: name a pain, make it vivid and worse, then present the product as the fix.'
+sources:
+  - Copywriting practice; conventionally attributed to Dan Kennedy, The Ultimate Sales Letter (1990)
+prompts: []
+slots:
+  - id: problem
+    purpose: Show the pain concretely
+    share: 0.25
+  - id: agitate
+    purpose: Escalate the consequences and emotional cost
+    share: 0.4
+  - id: solve
+    purpose: The product resolves it; a relief beat
+    share: 0.35
+panels:
+  min: 3
+  max: 9
+suits:
+  - pitch
+  - cautionary

@@ -1,0 +1,30 @@
+schema_version: 1
+id: freytag
+name: Freytag's Pyramid
+summary: 'Five-part dramatic arc: exposition, rising action, climax, falling action, dénouement — or catastrophe,
+  for a cautionary tale.'
+sources:
+  - Gustav Freytag, Die Technik des Dramas (1863)
+prompts: []
+slots:
+  - id: exposition
+    purpose: Context and characters
+    share: 0.15
+  - id: rising-action
+    purpose: Complications accumulate
+    share: 0.3
+  - id: climax
+    purpose: The turning point
+    share: 0.15
+  - id: falling-action
+    purpose: Consequences unfold
+    share: 0.2
+  - id: denouement
+    purpose: Resolution — or catastrophe in a cautionary tale
+    share: 0.2
+panels:
+  min: 5
+  max: 12
+suits:
+  - cautionary
+  - explainer

@@ -1,0 +1,27 @@
+schema_version: 1
+id: before-after-bridge
+name: Before–After–Bridge
+summary: Show the world before, the improved world after, then the bridge (the product) that gets 
+  there.
+sources:
+  - Copywriting practitioner literature (e.g. Copyhackers formula guides)
+prompts:
+  - stage: shotlist
+    text: 'Mirror the before and after panels: same framing and staging, changed content, so the difference
+      reads instantly.'
+slots:
+  - id: before
+    purpose: The current, painful state
+    share: 0.35
+  - id: after
+    purpose: The desired state, shown as already true
+    share: 0.3
+  - id: bridge
+    purpose: How the product connects them
+    share: 0.35
+panels:
+  min: 3
+  max: 9
+suits:
+  - before-after
+  - pitch

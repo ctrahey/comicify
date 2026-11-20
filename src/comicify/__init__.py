@@ -1,2 +1,7 @@
+"""Comicify: product comics from VCS-tracked structured intermediates."""
+
+
 def main() -> None:
-    print("Hello from comicify!")
+    from .cli import app
+
+    app()

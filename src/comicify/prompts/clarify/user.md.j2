@@ -1,0 +1,32 @@
+# Author's prompt
+
+<author_prompt>
+{{ prompt }}
+</author_prompt>
+{% if revisions %}
+
+# Author's revision notes
+{% for r in revisions %}
+
+<revision file="{{ r.name }}">
+{{ r.text }}
+</revision>
+{% endfor %}
+{% endif %}
+{% if answers %}
+
+# Clarifications already answered (do not ask these again)
+
+{% for a in answers %}
+- Q: {{ a.question }}
+  A ({{ a.source }}): {{ a.answer }}
+{% endfor %}
+{% endif %}
+
+# Evaluation
+
+```yaml
+{{ evaluation_yaml }}
+```
+
+Write the clarifying questions.

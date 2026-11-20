@@ -1,0 +1,63 @@
+schema_version: 1
+id: onlookers
+name: Meadow Onlookers
+personality:
+  - enthusiastic
+  - gossipy
+  - easily impressed
+  - fickle in their cheering
+motivation: 'They came to see a show: they cheer whoever is putting one on, gasp at the napping Hare,
+  and happily crown the Tortoise when he crosses first.'
+voice:
+  style: Short crowd shouts and whispers, often overlapping; reacts rather than explains.
+  sample_lines:
+    - Go, Hare, go!
+    - Is he... asleep?
+    - He's checking his WATCH?!
+    - Tortoise wins!
+visual:
+  species: 'mixed woodland animals (group of five): a squirrel, a fox, a badger, an owl, and a pair of
+    field mice'
+  abstraction: iconic
+  relative_height: 0.7
+  silhouette: A loose, bumpy row of small round-headed animals behind a low hedge or along the 
+    course edge, with the fox's pointed ears and the owl's tufts poking up highest.
+  proportions: Simple chibi shapes, big heads, 2 heads tall; fox tallest of the group (about 0.7 of 
+    the Hare), mice tiny (about 0.2), squirrel, badger, and owl in between; dot eyes and simple 
+    mouths.
+  colors:
+    - part: squirrel fur
+      color: rusty red-brown with cream belly
+    - part: fox fur
+      color: bright orange with white muzzle and tail tip
+    - part: badger fur
+      color: gray body with black-and-white striped face
+    - part: owl feathers
+      color: warm brown with pale tan face disk
+    - part: mice fur
+      color: soft gray with pink ears
+    - part: pennants and finish-line streamer
+      color: mixed bright red, yellow, and blue
+  distinguishing_features:
+    - Always drawn as a group of five, clustered together, never singled out as individual 
+      characters
+    - Arranged in a row along the course edge at start and finish, or peeking over a bush near the 
+      napping Hare
+    - Reaction marks (exclamation points, sweat drops, motion lines) carry most of their emotion
+    - Squirrel and mice wave tiny pennants; owl sits on a low branch or fence post
+  accessories:
+    - small hand-held pennants (squirrel and mice)
+expressions:
+  - cheering
+  - gasping
+  - whispering
+  - giggling
+  - shocked
+  - celebrating
+poses:
+  - lined-up-watching
+  - waving-pennants
+  - peeking-over-bush
+  - pointing
+  - leaning-in
+  - jumping-celebrating

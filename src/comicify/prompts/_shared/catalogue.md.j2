@@ -1,0 +1,11 @@
+## Comicify's direction catalogue
+
+Every comic uses exactly one pack per axis. Ids are exact.
+{% for axis in catalogue %}
+
+### {{ axis.axis }} (default if nothing else fits: `{{ axis.default }}`)
+{% for p in axis.packs %}
+- `{{ p.id }}` — {{ p.name }}: {{ p.summary }}{% if p.get('suits') %} (suits: {{ p.suits }}){% endif %}
+
+{% endfor %}
+{% endfor %}

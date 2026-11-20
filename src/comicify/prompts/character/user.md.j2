@@ -1,0 +1,7 @@
+{% from "_shared/yaml_block.j2" import block %}
+{% include "_shared/author_input.md.j2" %}
+{{ block("Brief", brief) }}
+{{ block("Full cast", cast) }}
+{{ block("This character (from the cast)", member) }}
+
+Write the profile for `{{ item }}`.

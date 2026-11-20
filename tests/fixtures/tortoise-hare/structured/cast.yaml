@@ -1,0 +1,25 @@
+schema_version: 1
+members:
+  - id: hare
+    name: The Hare
+    role: protagonist
+    product_user: true
+    summary: A fast, clever, smug rabbit who wants to win while flaunting how lazy he can be, so he 
+      naps mid-race trusting his Racer-Pacer watch to wake him at the last winnable moment. He loses
+      because the app's own sneaker ad distracts him during the neck-and-neck sprint.
+    is_group: false
+  - id: tortoise
+    name: The Tortoise
+    role: foil
+    product_user: false
+    summary: A wise, modest, serene tortoise who barely notices he's in a race, plodding steadily 
+      and chatting with the community. He doesn't mind winning or losing, and he wins simply by 
+      never stopping.
+    is_group: false
+  - id: onlookers
+    name: Meadow Onlookers
+    role: chorus
+    product_user: false
+    summary: Woodland animals lining the course whose admiration the Hare craves. They cheer the 
+      start, gawk at the sleeping Hare, and celebrate the Tortoise's win.
+    is_group: true

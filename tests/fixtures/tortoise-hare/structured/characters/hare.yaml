@@ -1,0 +1,73 @@
+schema_version: 1
+id: hare
+name: The Hare
+personality:
+  - smug and showy
+  - clever
+  - supremely fit and fast
+  - lazy and complacent
+  - image-obsessed, craves onlookers' admiration
+  - quietly anxious about the old tale's embarrassment
+motivation: Win the race while visibly flaunting how little effort he needs, without repeating the 
+  humiliating nap-and-lose of the old fable, so he trusts his Racer-Pacer watch to wake him at the 
+  last winnable moment.
+voice:
+  style: Breezy, cocky one-liners delivered to the crowd or his watch; short and punchy, turning to 
+    frantic sputters when things go wrong.
+  sample_lines:
+    - Wake me up when I can still win this race!
+    - Relax, folks. I've got tech.
+    - Showtime!
+    - Dismiss! DISMISS! Where's the X?!
+visual:
+  species: hare
+  abstraction: cartoon
+  relative_height: 1.0
+  silhouette: Tall, lanky rabbit with very long upright ears (one tends to flop when lounging), slim
+    athletic body, and big springy hind feet.
+  proportions: Large head about one third of height, roughly 3.5 heads tall without ears, ears 
+    nearly as long as the head is tall, long legs and oversized feet.
+  colors:
+    - part: fur
+      color: warm sandy brown
+    - part: belly, muzzle, and inner ears
+      color: creamy white
+    - part: eyes
+      color: dark brown with half-lidded smug look
+    - part: headband
+      color: bright red
+    - part: watch band
+      color: glossy black
+    - part: watch screen
+      color: glowing teal
+  distinguishing_features:
+    - Very long ears that read clearly in silhouette
+    - Half-lidded, self-satisfied eyes and lopsided smirk
+    - Big fluffy cotton tail
+    - Oversized hind feet that blur into speed lines when sprinting
+  costume: Bright red sweatband headband worn across the forehead between the ears; otherwise no 
+    clothes.
+  accessories:
+    - 'keeper-asleeper-watch: the Racer-Pacer 5000 smartwatch on his left wrist, chunky black band with
+      a round teal-glowing screen showing simple icons (alarm bell, two runner dots, ad banner)'
+expressions:
+  - smug
+  - showing-off
+  - drowsy
+  - sleeping
+  - startled-awake
+  - determined
+  - frantic
+  - annoyed
+  - dismayed
+poses:
+  - standing
+  - stretching-showily
+  - talking-into-watch
+  - lounging-under-tree
+  - napping
+  - springing-up
+  - sprinting
+  - sprinting-while-tapping-watch
+  - stumbling
+  - slumped-at-finish

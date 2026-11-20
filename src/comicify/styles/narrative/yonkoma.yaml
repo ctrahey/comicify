@@ -1,0 +1,31 @@
+schema_version: 1
+id: yonkoma
+name: Yonkoma (Four-Panel Strip)
+summary: 'Japanese four-panel strip: one kishōtenketsu beat per equal panel; the punchline lands in panel
+  four.'
+sources:
+  - Wikipedia, 'Yonkoma'
+prompts:
+  - stage: story
+    text: Exactly one beat per slot, one panel each (or two strips of four).
+  - stage: shotlist
+    text: 'All panels have weight 1: strict equality of panel size is the form.'
+slots:
+  - id: ki
+    purpose: Setup
+    share: 0.25
+  - id: sho
+    purpose: Development
+    share: 0.25
+  - id: ten
+    purpose: Turn or surprise
+    share: 0.25
+  - id: ketsu
+    purpose: Punchline
+    share: 0.25
+panels:
+  min: 4
+  max: 8
+suits:
+  - edge-case
+  - explainer

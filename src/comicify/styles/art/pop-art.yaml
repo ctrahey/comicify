@@ -1,0 +1,95 @@
+schema_version: 1
+id: pop-art
+name: Pop Art (Lichtenstein)
+summary: "Roy Lichtenstein's enlarged comic panels: heavy black contours, flat primaries, visible Ben-Day
+  dots, melodramatic close-ups."
+sources:
+  - Roy Lichtenstein Foundation
+  - MoMA, 'Drowning Girl' (1963)
+prompts:
+  - stage: character-pose
+    text: 'Favor dramatic, glamorous expressions: tears, wide eyes, parted lips — melodrama is the point.'
+abstraction: detailed
+line:
+  weight_px: 9.0
+  uniform: false
+  color: '#111111'
+color:
+  max_colors: 7
+  flat: true
+  anchors:
+    - '#E1251B'
+    - '#FFE500'
+    - '#0069B4'
+    - '#111111'
+    - '#FFFFFF'
+    - '#F4B3A4'
+  guidance: Large flat fields of primaries. Skin is pale pink standing in for red dots on white. No 
+    gradients.
+shading: Ben-Day dots for tints (added by the renderer); diagonal stripes on sky areas; no 
+  gradients.
+lettering:
+  dialogue:
+    family: Comic Neue
+    weight: 700
+    size: 30.0
+    uppercase: true
+  caption:
+    family: Comic Neue
+    weight: 700
+    size: 26.0
+    uppercase: true
+  sfx:
+    family: Bangers
+    weight: 400
+    size: 80.0
+    uppercase: false
+  title:
+    family: Bangers
+    weight: 400
+    size: 72.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 26.0
+    uppercase: false
+  balloon: ellipse
+  balloon_fill: '#ffffff'
+  caption_fill: '#FFE500'
+  stroke_px: 5.0
+  tail: straight
+  caption_style: box
+  padding_em: 0.5
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#FFE500'
+    outline: '#111111'
+    outline_px: 6.0
+    halo_px: 0.0
+    shadow: '#E1251B'
+    shadow_px: 6.0
+    max_rotation_deg: 10.0
+    scale: 1.2
+panel:
+  border_px: 9.0
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#111111'
+effects:
+  - kind: halftone
+    target: backdrop
+    spacing_px: 18.0
+    radius_px: 5.0
+    angle_deg: 45.0
+    color: '#E1251B'
+    opacity: 0.28
+  - kind: halftone
+    target: panel
+    spacing_px: 14.0
+    radius_px: 2.2
+    angle_deg: 45.0
+    color: '#0069B4'
+    opacity: 0.1
+svg_notes: Draw thick contours as filled outline shapes so they taper; keep fills flat; use 
+  hard-edged black shadow shapes.

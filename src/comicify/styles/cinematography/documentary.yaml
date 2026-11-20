@@ -1,0 +1,54 @@
+schema_version: 1
+id: documentary
+name: Documentary / Observational
+summary: Fly-on-the-wall, eye-level coverage with slightly imperfect framing, talking-head testimony
+  panels, and journalistic captions.
+sources:
+  - Bill Nichols, Introduction to Documentary (2001)
+  - Joe Sacco, Journalism (2012)
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.15
+  - shot: wide
+    share: 0.2
+  - shot: medium
+    share: 0.4
+  - shot: close-up
+    share: 0.15
+  - shot: insert
+    share: 0.1
+transitions:
+  - transition: moment-to-moment
+    share: 0.05
+  - transition: action-to-action
+    share: 0.35
+  - transition: subject-to-subject
+    share: 0.3
+  - transition: scene-to-scene
+    share: 0.2
+  - transition: aspect-to-aspect
+    share: 0.1
+camera:
+  eye_level: 0.85
+  low_angle: 0.05
+  high_angle: 0.1
+  dutch: 0.0
+  dutch_max_deg: 3.0
+composition:
+  - Subjects slightly off-center (rule of thirds)
+  - 'Talking heads: chest-up, facing the viewer, with a name/role caption'
+  - Real artefacts (screens, documents) as inserts
+pacing: One panel per beat; caption-heavy, with quoted speech.
+grid:
+  policy: tiers
+  max_rows: 3
+  max_cols: 3
+  gutter_px: 14.0
+lettering:
+  zone: corners
+  speakers_left_to_right: true
+  max_words_per_balloon: 20
+  headroom: 0.3
+  frame_breaks: none
+  captions: top-left

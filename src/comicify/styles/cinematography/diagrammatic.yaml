@@ -1,0 +1,58 @@
+schema_version: 1
+id: diagrammatic
+name: Diagrammatic
+summary: Small modular panels mixing elevations, cutaways, inserts, and labels (Chris Ware); 
+  restrained, precise, explanatory.
+sources:
+  - Daniel Raeburn, Chris Ware (2004)
+  - Thierry Groensteen, The System of Comics (2007)
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.1
+  - shot: wide
+    share: 0.25
+  - shot: medium
+    share: 0.25
+  - shot: close-up
+    share: 0.1
+  - shot: extreme-close-up
+    share: 0.05
+  - shot: insert
+    share: 0.25
+transitions:
+  - transition: moment-to-moment
+    share: 0.25
+  - transition: action-to-action
+    share: 0.3
+  - transition: subject-to-subject
+    share: 0.15
+  - transition: scene-to-scene
+    share: 0.05
+  - transition: aspect-to-aspect
+    share: 0.2
+  - transition: non-sequitur
+    share: 0.05
+camera:
+  eye_level: 0.6
+  low_angle: 0.0
+  high_angle: 0.4
+  dutch: 0.0
+  dutch_max_deg: 0.0
+composition:
+  - Flat, orthographic staging; no dramatic angles
+  - Repeat identical framing to slice time
+  - Lean on insert panels to show the product's state and logic
+pacing: Two to five panels per beat (time slicing); 40%+ silent panels; small, sparse text.
+grid:
+  policy: regular
+  max_rows: 3
+  max_cols: 4
+  gutter_px: 8.0
+lettering:
+  zone: corners
+  speakers_left_to_right: true
+  max_words_per_balloon: 10
+  headroom: 0.25
+  frame_breaks: none
+  captions: top-bar

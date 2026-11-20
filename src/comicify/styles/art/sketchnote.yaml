@@ -1,0 +1,79 @@
+schema_version: 1
+id: sketchnote
+name: Sketchnote / Whiteboard
+summary: 'A product designer at a whiteboard: marker figures, boxes, arrows, and labels, with highlighter
+  accents.'
+sources:
+  - Mike Rohde, The Sketchnote Handbook (2012)
+  - Dan Roam, The Back of the Napkin (2008)
+prompts: []
+abstraction: iconic
+line:
+  weight_px: 5.0
+  uniform: true
+  color: '#222222'
+color:
+  max_colors: 4
+  flat: true
+  anchors:
+    - '#222222'
+    - '#1E6FD9'
+    - '#E03E2D'
+    - '#FFE45C'
+    - '#FAFAF7'
+  guidance: Black marker plus blue and red accents for emphasis; translucent yellow highlighter.
+shading: Loose scribble fill; highlighter blocks behind key elements.
+lettering:
+  dialogue:
+    family: Kalam
+    weight: 400
+    size: 30.0
+    uppercase: false
+  caption:
+    family: Kalam
+    weight: 700
+    size: 26.0
+    uppercase: false
+  sfx:
+    family: Kalam
+    weight: 700
+    size: 54.0
+    uppercase: false
+  title:
+    family: Kalam
+    weight: 700
+    size: 60.0
+    uppercase: false
+  device:
+    family: Kalam
+    weight: 700
+    size: 24.0
+    uppercase: false
+  balloon: rounded
+  balloon_fill: '#FAFAF7'
+  caption_fill: '#FFE45C'
+  stroke_px: 3.5
+  tail: line
+  caption_style: plain
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#E03E2D'
+    outline_px: 0.0
+    halo: '#FFE45C'
+    halo_px: 10.0
+    shadow_px: 0.0
+    max_rotation_deg: 6.0
+    scale: 1.0
+panel:
+  border_px: 4.0
+  corner_radius_px: 10.0
+  paper: '#FAFAF7'
+  ink: '#222222'
+effects:
+  - kind: wobble
+    scale_px: 2.5
+    frequency: 0.03
+    seed: 7
+svg_notes: Bean or star-shaped people about 3 heads tall; marker-weight uniform lines; no fills 
+  except highlighter accents.

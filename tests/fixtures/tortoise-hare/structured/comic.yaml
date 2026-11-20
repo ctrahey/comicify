@@ -1,0 +1,60 @@
+schema_version: 1
+pages:
+  - id: page-1
+    rows: 2
+    cols: 4
+    slots:
+      - panel: start-line-showoff
+        row: 0
+        col: 0
+        row_span: 1
+        col_span: 1
+      - panel: wake-me-command
+        row: 0
+        col: 1
+        row_span: 1
+        col_span: 1
+      - panel: tortoise-strolls-by
+        row: 0
+        col: 2
+        row_span: 1
+        col_span: 1
+      - panel: wrist-buzzes
+        row: 0
+        col: 3
+        row_span: 1
+        col_span: 1
+      - panel: sprint-now-screen
+        row: 1
+        col: 0
+        row_span: 1
+        col_span: 1
+      - panel: neck-and-neck
+        row: 1
+        col: 1
+        row_span: 1
+        col_span: 1
+      - panel: ad-covers-watch
+        row: 1
+        col: 2
+        row_span: 1
+        col_span: 1
+      - panel: wheres-the-x
+        row: 1
+        col: 3
+        row_span: 1
+        col_span: 1
+  - id: page-2
+    rows: 1
+    cols: 4
+    slots:
+      - panel: tortoise-breaks-ribbon
+        row: 0
+        col: 0
+        row_span: 1
+        col_span: 1
+      - panel: shop-now
+        row: 0
+        col: 1
+        row_span: 1
+        col_span: 3

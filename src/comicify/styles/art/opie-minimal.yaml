@@ -1,0 +1,78 @@
+schema_version: 1
+id: opie-minimal
+name: Opie Minimal
+summary: "Julian Opie's reductive figures: one uniform thick black outline, flat color, circular heads,
+  features reduced to dots or nothing."
+sources:
+  - julianopie.com
+  - Tate, Julian Opie
+prompts: []
+abstraction: iconic
+line:
+  weight_px: 11.0
+  uniform: true
+  color: '#000000'
+color:
+  max_colors: 10
+  flat: true
+  anchors:
+    - '#8FD3F4'
+    - '#7ACB4E'
+    - '#F2C9A0'
+    - '#E8453C'
+    - '#2A3A6B'
+    - '#FFFFFF'
+  guidance: No gradients, no texture; backgrounds are flat color fields.
+shading: None. Shapes are defined by line and flat color only.
+lettering:
+  dialogue:
+    family: Work Sans
+    weight: 400
+    size: 30.0
+    uppercase: false
+  caption:
+    family: Work Sans
+    weight: 400
+    size: 24.0
+    uppercase: false
+  sfx:
+    family: Archivo Black
+    weight: 400
+    size: 60.0
+    uppercase: false
+  title:
+    family: Archivo Black
+    weight: 400
+    size: 56.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 24.0
+    uppercase: false
+  balloon: rounded
+  balloon_fill: '#ffffff'
+  caption_fill: '#ffffff'
+  stroke_px: 5.0
+  tail: straight
+  caption_style: plain
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: ink
+    outline_px: 0.0
+    halo: '#ffffff'
+    halo_px: 8.0
+    shadow_px: 0.0
+    max_rotation_deg: 0.0
+    scale: 0.9
+panel:
+  border_px: 0.0
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#000000'
+effects:
+  - kind: posterize
+    levels: 5
+svg_notes: Every stroke the same width with round joins; heads are circles or ellipses; eyes are 
+  dots or omitted; no mouth or a single line.

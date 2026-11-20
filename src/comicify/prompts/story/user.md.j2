@@ -1,0 +1,8 @@
+{% from "_shared/yaml_block.j2" import block %}
+{% include "_shared/author_input.md.j2" %}
+{{ block("Brief", brief) }}
+{{ block("Subject product", product) }}
+{{ block("Cast", cast) }}
+{{ block("Narrative pattern", pattern) }}
+
+Write the story.

@@ -1,0 +1,88 @@
+schema_version: 1
+id: sunday-funnies
+name: Sunday Funnies
+summary: 'Sunday newspaper comics (Peanuts, Calvin and Hobbes): hand-inked lines with a slight tremor,
+  muted newsprint color, simple backgrounds, gentle observational tone.'
+sources:
+  - Charles M. Schulz Museum
+  - Bill Watterson, The Calvin and Hobbes Tenth Anniversary Book (1995)
+prompts: []
+abstraction: cartoon
+line:
+  weight_px: 3.5
+  uniform: false
+  color: '#1A1A1A'
+color:
+  max_colors: 12
+  flat: true
+  anchors:
+    - '#F5EFD9'
+    - '#9CC9E8'
+    - '#9BC46B'
+    - '#D9483B'
+    - '#F4D35E'
+    - '#F6D2B0'
+  guidance: Muted newsprint flats; pale or white skies.
+shading: Flat color, slightly off-register; minimal hatching.
+lettering:
+  dialogue:
+    family: Patrick Hand
+    weight: 400
+    size: 32.0
+    uppercase: true
+  caption:
+    family: Patrick Hand
+    weight: 400
+    size: 28.0
+    uppercase: true
+  sfx:
+    family: Bangers
+    weight: 400
+    size: 60.0
+    uppercase: false
+  title:
+    family: Patrick Hand
+    weight: 400
+    size: 64.0
+    uppercase: true
+  device:
+    family: Patrick Hand
+    weight: 400
+    size: 26.0
+    uppercase: true
+  balloon: ellipse
+  balloon_fill: '#ffffff'
+  caption_fill: '#F5EFD9'
+  stroke_px: 2.5
+  tail: wedge
+  caption_style: box
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: ink
+    outline_px: 0.0
+    halo: '#F5EFD9'
+    halo_px: 8.0
+    shadow_px: 0.0
+    max_rotation_deg: 10.0
+    scale: 1.0
+panel:
+  border_px: 3.0
+  corner_radius_px: 0.0
+  paper: '#F5EFD9'
+  ink: '#1A1A1A'
+effects:
+  - kind: wobble
+    scale_px: 2.5
+    frequency: 0.035
+    seed: 7
+  - kind: misregister
+    dx_px: 2.0
+    dy_px: 1.5
+    color: '#D9483B'
+    opacity: 0.18
+  - kind: grain
+    opacity: 0.1
+    frequency: 0.9
+svg_notes: Big round heads on small bodies (2–3 heads tall); dot eyes; simple ground lines instead 
+  of detailed scenery.

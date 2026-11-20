@@ -1,0 +1,77 @@
+schema_version: 1
+id: ligne-claire
+name: Ligne Claire
+summary: "Hergé's clear line: uniform black contours, flat color, no hatching or cast shadows; cartoon
+  characters in precise, realistic settings."
+sources:
+  - Musée Hergé
+  - Wikipedia, 'Ligne claire' (term coined by Joost Swarte, 1977)
+prompts: []
+abstraction: cartoon
+line:
+  weight_px: 2.5
+  uniform: true
+  color: '#000000'
+color:
+  max_colors: 16
+  flat: true
+  anchors:
+    - '#7EC4E6'
+    - '#3E6FB0'
+    - '#F7D3B5'
+    - '#C65A3A'
+    - '#E6B84A'
+    - '#B8B8B8'
+  guidance: Bright but not saturated; uniform lighting; every area enclosed and flat-filled.
+shading: 'None: no gradients, no cast shadows, no hatching.'
+lettering:
+  dialogue:
+    family: Comic Neue
+    weight: 700
+    size: 28.0
+    uppercase: true
+  caption:
+    family: Comic Neue
+    weight: 700
+    size: 24.0
+    uppercase: true
+  sfx:
+    family: Bangers
+    weight: 400
+    size: 56.0
+    uppercase: false
+  title:
+    family: Bangers
+    weight: 400
+    size: 60.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 24.0
+    uppercase: false
+  balloon: rounded
+  balloon_fill: '#ffffff'
+  caption_fill: '#FFF7D6'
+  stroke_px: 2.0
+  tail: straight
+  caption_style: box
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#C65A3A'
+    outline: '#000000'
+    outline_px: 3.0
+    halo: '#ffffff'
+    halo_px: 8.0
+    shadow_px: 0.0
+    max_rotation_deg: 6.0
+    scale: 1.0
+panel:
+  border_px: 2.0
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#000000'
+effects: []
+svg_notes: One stroke width everywhere; round faces with dot eyes; backgrounds more detailed and 
+  architectural than characters.

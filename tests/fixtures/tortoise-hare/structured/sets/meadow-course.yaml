@@ -1,0 +1,18 @@
+schema_version: 1
+id: meadow-course
+name: Meadow Race Course
+description: A wide, gently rolling meadow with a dirt racing path winding from a starting line with
+  a checkered flag post on the far left, past a big shady oak with a soft grassy patch beneath it in
+  the middle, to a striped finish banner on a small rise at the far right. Low wooden fences and 
+  clusters of wildflowers line the path for onlookers; distant hills and a few puffy clouds fill the
+  background, while the foreground path and grass stay open and uncluttered.
+time_of_day: late morning
+mood: Bright, sunny, and breezy, with a cheerful storybook country-fair feeling and a lazy warmth 
+  under the oak's shade.
+horizon: 0.45
+landmarks:
+  - the start line with a checkered flag post
+  - the big shady oak where the Hare naps
+  - the striped finish banner on the rise
+  - the winding dirt race path
+  - low wooden fences where onlookers gather

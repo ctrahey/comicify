@@ -1,0 +1,76 @@
+schema_version: 1
+id: corporate-flat
+name: Corporate Flat
+summary: 'The tech-product illustration house style (Alegria, Humaaans): outline-free flat people with
+  small heads, long limbs, non-natural skin tones, geometric props.'
+sources:
+  - Buck Design, 'Alegria' for Facebook (2017)
+  - Pablo Stanley, Humaaans
+prompts: []
+abstraction: iconic
+line:
+  weight_px: 2.0
+  uniform: true
+  color: '#2D3436'
+color:
+  max_colors: 7
+  flat: true
+  anchors:
+    - '#6C5CE7'
+    - '#FF7675'
+    - '#00B894'
+    - '#2D3436'
+    - '#F3A683'
+    - '#F5F6FA'
+  guidance: Shapes defined by color contrast; one darker same-hue tone for shadow.
+shading: One same-hue shadow tone; no outlines on figures.
+lettering:
+  dialogue:
+    family: Poppins
+    weight: 400
+    size: 27.0
+    uppercase: false
+  caption:
+    family: Poppins
+    weight: 600
+    size: 23.0
+    uppercase: false
+  sfx:
+    family: Poppins
+    weight: 600
+    size: 52.0
+    uppercase: false
+  title:
+    family: Poppins
+    weight: 600
+    size: 56.0
+    uppercase: false
+  device:
+    family: Poppins
+    weight: 600
+    size: 23.0
+    uppercase: false
+  balloon: rounded
+  balloon_fill: '#ffffff'
+  caption_fill: '#EDEBFF'
+  stroke_px: 0.01
+  tail: straight
+  caption_style: box
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#6C5CE7'
+    outline_px: 0.0
+    halo: '#ffffff'
+    halo_px: 8.0
+    shadow_px: 0.0
+    max_rotation_deg: 0.0
+    scale: 0.9
+panel:
+  border_px: 0.0
+  corner_radius_px: 22.0
+  paper: '#F5F6FA'
+  ink: '#2D3436'
+effects: []
+svg_notes: No outlines on figures (outlines only on UI and props, 2px); heads about 1/9 of height; 
+  oversized hands and feet; faceless or minimal faces.

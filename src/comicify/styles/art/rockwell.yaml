@@ -1,0 +1,80 @@
+schema_version: 1
+id: rockwell
+name: Rockwell-Inspired Editorial
+summary: 'Warm, painterly mid-century Americana (Saturday Evening Post covers): sympathetic caricatured
+  expressions, storytelling props, vignettes fading to white. In SVG this lands closer to 1950s gouache
+  advertising art than to oil.'
+sources:
+  - Norman Rockwell Museum (nrm.org)
+  - Saturday Evening Post archive
+prompts: []
+abstraction: detailed
+line:
+  weight_px: 1.0
+  uniform: false
+  color: '#6B4A35'
+color:
+  flat: false
+  anchors:
+    - '#E8B48F'
+    - '#6B4A35'
+    - '#C99A4B'
+    - '#A8433A'
+    - '#5A7190'
+    - '#FBF8F1'
+  guidance: Warm light, cool shadows; 3–5 tonal steps per form; no black.
+shading: Outline-free forms modeled with stacked tone shapes and soft gradients; canvas texture 
+  (added by the renderer).
+lettering:
+  dialogue:
+    family: Libre Caslon Text
+    weight: 400
+    size: 28.0
+    uppercase: false
+  caption:
+    family: Libre Caslon Text
+    weight: 400
+    size: 24.0
+    uppercase: false
+  sfx:
+    family: Libre Caslon Text
+    weight: 700
+    size: 52.0
+    uppercase: false
+  title:
+    family: Libre Caslon Text
+    weight: 700
+    size: 56.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 24.0
+    uppercase: false
+  balloon: ellipse
+  balloon_fill: '#ffffff'
+  caption_fill: '#FBF8F1'
+  stroke_px: 1.5
+  tail: straight
+  caption_style: plain
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#A8433A'
+    outline_px: 0.0
+    halo: '#FBF8F1'
+    halo_px: 6.0
+    shadow_px: 0.0
+    max_rotation_deg: 0.0
+    scale: 0.8
+panel:
+  border_px: 1.5
+  corner_radius_px: 0.0
+  paper: '#FBF8F1'
+  ink: '#3b2a20'
+effects:
+  - kind: grain
+    opacity: 0.14
+    frequency: 1.2
+svg_notes: 'No outlines: define edges by value. Use linear/radial gradients for form; caricature faces
+  (big expressions, prominent ears and noses).'

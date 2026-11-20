@@ -1,0 +1,31 @@
+schema_version: 1
+id: kishotenketsu
+name: Kishōtenketsu
+summary: 'Four-part East Asian structure: introduce, develop, twist with an unexpected element, reconcile.
+  No conflict required.'
+sources:
+  - Wikipedia, 'Kishōtenketsu' (from Chinese qǐ chéng zhuǎn hé poetry)
+prompts:
+  - stage: story
+    text: The `ten` beat must not be a direct consequence of `sho`; it arrives from outside. No 
+      antagonist is needed.
+slots:
+  - id: ki
+    purpose: 'Introduction: characters and setting'
+    share: 0.25
+  - id: sho
+    purpose: 'Development: deepen the situation without changing direction'
+    share: 0.25
+  - id: ten
+    purpose: 'Twist: a new, seemingly unrelated element or a shift in perspective'
+    share: 0.25
+  - id: ketsu
+    purpose: 'Reconciliation: the twist recontextualizes everything before it'
+    share: 0.25
+panels:
+  min: 4
+  max: 8
+suits:
+  - explainer
+  - edge-case
+  - pitch

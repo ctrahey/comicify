@@ -1,0 +1,60 @@
+schema_version: 1
+id: film-noir
+name: Film Noir
+summary: Low and canted angles, frames within frames, faces half in shadow, and first-person 
+  narration captions.
+sources:
+  - J. A. Place & L. S. Peterson, 'Some Visual Motifs of Film Noir', Film Comment (1974)
+  - Paul Schrader, 'Notes on Film Noir' (1972)
+prompts:
+  - stage: shotlist
+    text: Use `caption` text for a terse first-person narrator in the protagonist's voice.
+shot_mix:
+  - shot: establishing
+    share: 0.1
+  - shot: wide
+    share: 0.15
+  - shot: medium
+    share: 0.3
+  - shot: close-up
+    share: 0.25
+  - shot: extreme-close-up
+    share: 0.05
+  - shot: insert
+    share: 0.1
+  - shot: over-the-shoulder
+    share: 0.05
+transitions:
+  - transition: moment-to-moment
+    share: 0.1
+  - transition: action-to-action
+    share: 0.35
+  - transition: subject-to-subject
+    share: 0.25
+  - transition: scene-to-scene
+    share: 0.15
+  - transition: aspect-to-aspect
+    share: 0.15
+camera:
+  eye_level: 0.4
+  low_angle: 0.35
+  high_angle: 0.15
+  dutch: 0.2
+  dutch_max_deg: 20.0
+composition:
+  - Subjects off-center with heavy negative space
+  - 'Frames within frames: doorways, windows, screens'
+  - Silhouettes against light at key moments
+pacing: 'One or two panels per beat; 10–20% silent panels. Caption-heavy: a first-person narrator voice.'
+grid:
+  policy: tiers
+  max_rows: 3
+  max_cols: 3
+  gutter_px: 14.0
+lettering:
+  zone: corners
+  speakers_left_to_right: true
+  max_words_per_balloon: 18
+  headroom: 0.28
+  frame_breaks: sfx
+  captions: top-left

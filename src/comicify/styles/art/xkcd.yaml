@@ -1,0 +1,77 @@
+schema_version: 1
+id: xkcd
+name: Stick Figure (xkcd-style)
+summary: 'Minimal stick figures: circle heads, no faces, sparse props, wobbly hand-drawn lines, text-driven
+  humor; diagrams welcome.'
+sources:
+  - xkcd.com/about
+  - 'Randall Munroe, xkcd: volume 0 (2009)'
+prompts: []
+abstraction: iconic
+line:
+  weight_px: 3.5
+  uniform: true
+  color: '#000000'
+color:
+  max_colors: 3
+  flat: true
+  anchors:
+    - '#000000'
+    - '#FFFFFF'
+    - '#C0392B'
+  guidance: Black line on white; at most one accent color, for the product or a diagram.
+shading: None; figures are unfilled lines.
+lettering:
+  dialogue:
+    family: Patrick Hand
+    weight: 400
+    size: 32.0
+    uppercase: true
+  caption:
+    family: Patrick Hand
+    weight: 400
+    size: 28.0
+    uppercase: true
+  sfx:
+    family: Patrick Hand
+    weight: 400
+    size: 48.0
+    uppercase: true
+  title:
+    family: Patrick Hand
+    weight: 400
+    size: 60.0
+    uppercase: true
+  device:
+    family: Patrick Hand
+    weight: 400
+    size: 26.0
+    uppercase: true
+  balloon: none
+  balloon_fill: '#ffffff'
+  caption_fill: '#ffffff'
+  stroke_px: 2.5
+  tail: line
+  caption_style: plain
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: ink
+    outline_px: 0.0
+    halo_px: 0.0
+    shadow_px: 0.0
+    max_rotation_deg: 0.0
+    scale: 0.7
+panel:
+  border_px: 2.5
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#000000'
+effects:
+  - kind: wobble
+    scale_px: 2.0
+    frequency: 0.03
+    seed: 7
+svg_notes: Circle head about 1/5 of figure height; single-line torso and limbs; no fills on figures;
+  hats or hair are the only identifiers. Species are suggested by a single trait (long ears, a shell
+  outline).

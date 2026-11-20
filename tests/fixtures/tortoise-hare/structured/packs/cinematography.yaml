@@ -1,0 +1,48 @@
+schema_version: 1
+id: newspaper-strip
+name: Classic Newspaper Strip
+summary: 'Static, theatrical, eye-level staging: full-figure or medium shots in profile or three-quarter
+  view, against minimal, repeated backgrounds.'
+sources:
+  - Mort Walker, The Lexicon of Comicana (1980)
+  - Will Eisner, Comics and Sequential Art (1985)
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.05
+  - shot: wide
+    share: 0.25
+  - shot: medium
+    share: 0.55
+  - shot: close-up
+    share: 0.1
+  - shot: insert
+    share: 0.05
+transitions:
+  - transition: moment-to-moment
+    share: 0.15
+  - transition: action-to-action
+    share: 0.5
+  - transition: subject-to-subject
+    share: 0.25
+  - transition: scene-to-scene
+    share: 0.05
+  - transition: non-sequitur
+    share: 0.05
+camera:
+  eye_level: 0.95
+  low_angle: 0.0
+  high_angle: 0.05
+  dutch: 0.0
+  dutch_max_deg: 0.0
+composition:
+  - Keep camera distance consistent across panels
+  - Order speakers left-to-right in reading order
+  - Keep the ground line at a consistent height across the strip
+  - Flat staging with minimal depth
+pacing: One panel per beat. A silent 'beat' panel just before the punchline is classic.
+grid:
+  policy: tiers
+  max_rows: 2
+  max_cols: 4
+  gutter_px: 20.0

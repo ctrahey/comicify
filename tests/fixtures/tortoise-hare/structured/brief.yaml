@@ -1,0 +1,35 @@
+schema_version: 1
+title: The Keeper-Asleeper Racer-Pacer 5000
+logline: The Hare naps mid-race trusting his watch app to wake him at the last winnable moment, and 
+  it does, but the same app's own sneaker ad distracts him during the neck-and-neck sprint and the 
+  Tortoise wins.
+intent: cautionary
+goal: Readers should see that the wake-when-you-can-still-win alarm works exactly as designed, then 
+  feel the sting of watching the app's own monetization throw the win away at the one moment that 
+  mattered.
+key_message: A just-in-time alert leaves zero margin, so anything the app itself pushes during that 
+  window (like an ad) directly defeats the core feature.
+audience: The product team behind the Racer-Pacer concept (developers, designers, PMs), who know the
+  fable of the Tortoise and the Hare and the general idea of the race-aware watch app.
+context: Racer-Pacer is a wearable/watch race app that knows every participant's course progress, 
+  max observed pace, average pace, and projected finish times at current-average and at max pace. 
+  Its headline feature alerts you the moment that accelerating to max pace now still wins, while 
+  staying slower would let someone else win. The app also pushes branded ads.
+tone: Casual and fun, fable-like with light satire; the Hare is smug and showy, the Tortoise serene 
+  and friendly.
+length:
+  target_pages: 1
+  max_panels: 10
+  notes: "As short as practical: about one page. Beats are setup/intro of the watch, race start, Hare
+    starts nap with voice command, Tortoise passes sleeping Hare, alarm buzzes, sprint, in-app ad distracts,
+    Tortoise wins. Include one panel or screen that makes the alarm rule legible (e.g. projected finish
+    at max pace just beating the Tortoise's projected finish)."
+aspect: 16:9
+out_of_scope:
+  - Realistic watch UI or screenshots; keep the watch screen simple and in the comic's style
+  - Ads from the watch platform or third-party apps; the ad comes from Racer-Pacer itself
+  - Other app features beyond race tracking, the win-window alarm, and the pushed ad
+  - Detailed pace math, maps, or data dashboards beyond what's needed to show the alarm rule
+  - Moralizing about the Hare's laziness or the Tortoise's virtue; the lesson is about the product 
+    decision
+  - A comfortable buffer at the alarm; the sprint must be neck-and-neck

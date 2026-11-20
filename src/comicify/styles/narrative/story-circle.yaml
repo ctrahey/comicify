@@ -1,0 +1,43 @@
+schema_version: 1
+id: story-circle
+name: Story Circle (Compressed Hero's Journey)
+summary: "Dan Harmon's eight-step compression of Campbell's monomyth: comfort, need, go, search, find,
+  take, return, change."
+sources:
+  - Joseph Campbell, The Hero with a Thousand Faces (1949)
+  - Dan Harmon, 'Story Structure 101' (c. 2009)
+prompts:
+  - stage: story
+    text: With fewer than eight panels, share panels between go+search and take+return (each still 
+      gets its own beat).
+slots:
+  - id: you
+    purpose: The character in their comfort zone
+    share: 0.125
+  - id: need
+    purpose: They want something
+    share: 0.125
+  - id: go
+    purpose: They enter an unfamiliar situation (adopt the new tool)
+    share: 0.125
+  - id: search
+    purpose: They adapt and struggle
+    share: 0.125
+  - id: find
+    purpose: They get what they wanted
+    share: 0.125
+  - id: take
+    purpose: They pay a price
+    share: 0.125
+  - id: return
+    purpose: Back to the familiar
+    share: 0.125
+  - id: change
+    purpose: Having changed
+    share: 0.125
+panels:
+  min: 6
+  max: 12
+suits:
+  - pitch
+  - before-after

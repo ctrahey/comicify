@@ -1,0 +1,61 @@
+schema_version: 1
+id: nine-panel-grid
+name: Nine-Panel Grid
+summary: A rigid 3×3 grid of equal panels (Watchmen); rhythm comes from repetition, match cuts, and 
+  slow push-ins.
+sources:
+  - Dave Gibbons, Watching the Watchmen (2008)
+  - Scott McCloud, Making Comics (2006)
+prompts:
+  - stage: shotlist
+    text: All panels have weight 1 (the grid is the form).
+shot_mix:
+  - shot: establishing
+    share: 0.1
+  - shot: wide
+    share: 0.15
+  - shot: medium
+    share: 0.35
+  - shot: close-up
+    share: 0.2
+  - shot: extreme-close-up
+    share: 0.05
+  - shot: insert
+    share: 0.1
+  - shot: over-the-shoulder
+    share: 0.05
+transitions:
+  - transition: moment-to-moment
+    share: 0.15
+  - transition: action-to-action
+    share: 0.35
+  - transition: subject-to-subject
+    share: 0.25
+  - transition: scene-to-scene
+    share: 0.2
+  - transition: aspect-to-aspect
+    share: 0.05
+camera:
+  eye_level: 0.75
+  low_angle: 0.1
+  high_angle: 0.15
+  dutch: 0.0
+  dutch_max_deg: 0.0
+composition:
+  - Repeat identical framing across consecutive panels, changing one element
+  - Use graphic match cuts at scene transitions
+  - Push the camera slightly closer across a row
+pacing: One or two panels per beat; silent panels are frequent and used for duration. Captions carry
+  more text.
+grid:
+  policy: regular
+  max_rows: 3
+  max_cols: 3
+  gutter_px: 14.0
+lettering:
+  zone: top-band
+  speakers_left_to_right: true
+  max_words_per_balloon: 20
+  headroom: 0.3
+  frame_breaks: none
+  captions: top-left

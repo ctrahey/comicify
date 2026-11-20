@@ -1,0 +1,102 @@
+schema_version: 1
+name: Keeper-Asleeper Racer-Pacer 5000
+tagline: Wake me up when I can still win this race!
+form_factor: wearable watch app
+summary: A race-aware watch app that tracks every participant's course progress and pace, and lets a
+  racer nap until the last moment that sprinting at max pace still wins. The same app also pushes 
+  its own branded ads.
+features:
+  - id: win-window-alarm
+    name: Win-Window Alarm
+    description: Set by voice command, it buzzes the wearer at the moment that sprinting at max pace
+      from now still wins, while staying slower would let a rival win.
+    rules:
+      - id: alarm-trigger
+        description: Fire the alarm when the wearer's projected finish at max pace still beats every
+          rival's projected finish at their current average, but the wearer's projected finish at 
+          current pace does not.
+        formal: fire when T_self_max(now) < min_r T_r_avg(now) AND T_self_current(now) >= min_r 
+          T_r_avg(now), where T_x_max = now + remaining_x / maxpace_x and T_x_avg = now + 
+          remaining_x / avgpace_x
+      - id: latest-moment
+        description: The alarm fires as late as possible, when the margin between the wearer's 
+          max-pace finish and the leading rival's finish is nearly zero, so any delay forfeits the 
+          win.
+        formal: margin = min_r T_r_avg - T_self_max; alarm fires as margin approaches 0 (just above 
+          0)
+      - id: voice-arm
+        description: The wearer arms the alarm by speaking a command such as 'Wake me up when I can 
+          still win this race!'
+    screens:
+      - alarm-armed
+      - win-window-alarm
+    depicted_as: Watch face shows two finish-time bars, Hare @ max and Tortoise @ avg; when the 
+      Hare's bar is just barely shorter, the watch buzzes with 'SPRINT NOW!'
+  - id: race-tracking
+    name: Race Tracking
+    description: Knows the wearer is in a race and tracks every participant's progress, max pace, 
+      average pace, and projected finish times.
+    rules:
+      - id: projections
+        description: For each participant, project finish time at current average pace and at max 
+          observed pace.
+        formal: T_avg = now + remaining / avgpace; T_max = now + remaining / maxpace
+    screens:
+      - win-window-alarm
+    depicted_as: Finish-time bars for Hare and Tortoise on the alarm screen.
+screens:
+  - id: alarm-armed
+    device: watch face
+    purpose: Shows the Hare has set the win-window alarm before napping.
+    elements:
+      - kind: icon
+        label: Racer-Pacer
+        emphasis: false
+      - kind: headline
+        content: Wake when win-able
+        emphasis: false
+      - kind: text
+        content: Alarm set ✓
+        emphasis: false
+  - id: win-window-alarm
+    device: watch face
+    purpose: "Makes the alarm rule legible: Hare's max-pace finish just beats the Tortoise's projected
+      finish."
+    elements:
+      - kind: notification
+        content: SPRINT NOW!
+        emphasis: true
+      - kind: gauge
+        label: Hare @ max
+        content: Finish 4:58 (99%)
+        emphasis: false
+      - kind: gauge
+        label: Tortoise @ avg
+        content: Finish 5:00 (100%)
+        emphasis: false
+      - kind: text
+        content: 'Margin: 0:02'
+        emphasis: false
+  - id: sneaker-ad
+    device: watch face
+    purpose: Shows the app's own branded ad covering the screen mid-sprint, demanding a dismiss.
+    elements:
+      - kind: icon
+        label: Racer-Pacer
+        emphasis: false
+      - kind: notification
+        content: NEW Hare-Sneakers! 20% off
+        emphasis: true
+      - kind: image
+        label: Hare-Sneakers
+        emphasis: false
+      - kind: button
+        label: Shop
+        emphasis: false
+      - kind: button
+        label: x
+        emphasis: false
+incidental:
+  - The Racer-Pacer app itself pushes branded ad notifications (Hare-Sneakers), even during an 
+    active race sprint.
+  - The ad covers the watch face and requires a fiddly tap to dismiss, distracting the wearer.

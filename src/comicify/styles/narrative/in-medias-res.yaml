@@ -1,0 +1,34 @@
+schema_version: 1
+id: in-medias-res
+name: In Medias Res (Cold Open)
+summary: Open on the most dramatic moment, rewind to how we got there, catch up, and resolve.
+sources:
+  - Horace, Ars Poetica (c. 19 BCE)
+  - Wikipedia, 'In medias res'
+prompts:
+  - stage: shotlist
+    text: The `catch-up` panel repeats the cold open's framing so readers recognize it. Mark the 
+      rewind with a caption.
+slots:
+  - id: cold-open
+    purpose: 'The hook: a crisis moment, unexplained'
+    share: 0.15
+  - id: rewind
+    purpose: Time-marker caption, e.g. 'Three hours earlier…'
+    share: 0.1
+  - id: buildup
+    purpose: The events leading to the crisis
+    share: 0.4
+  - id: catch-up
+    purpose: Return to the opening moment, now understood
+    share: 0.15
+  - id: resolution
+    purpose: How it ends; what the product changes
+    share: 0.2
+panels:
+  min: 5
+  max: 12
+suits:
+  - cautionary
+  - edge-case
+  - pitch

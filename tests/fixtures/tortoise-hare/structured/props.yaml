@@ -1,0 +1,24 @@
+schema_version: 1
+props:
+  - id: racer-pacer-watch
+    name: Keeper-Asleeper Racer-Pacer 5000
+    description: A chunky, flashy smartwatch on the Hare's wrist with a bright round face and a 
+      sporty strap; simple cartoon screen showing big text, bars, or an ad in the comic's style.
+    product_device: true
+    device: watch
+    screens:
+      - alarm-armed
+      - win-window-alarm
+      - sneaker-ad
+  - id: starting-flag
+    name: Starting flag
+    description: A checkered flag on a short stick, held up by an onlooker and dropping to start the
+      race.
+    product_device: false
+    screens: []
+  - id: finish-ribbon
+    name: Finish ribbon
+    description: A red ribbon stretched across the finish line beneath a 'FINISH' banner, snapping 
+      as the Tortoise breaks it.
+    product_device: false
+    screens: []

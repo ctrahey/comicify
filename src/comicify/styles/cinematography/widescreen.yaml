@@ -1,0 +1,56 @@
+schema_version: 1
+id: widescreen
+name: Widescreen Decompressed
+summary: 'Full-width letterbox panels stacked in tiers (The Authority): spectacle wides, scale contrast,
+  few words.'
+sources:
+  - 'Warren Ellis & Bryan Hitch, The Authority #1–12 (1999–2000)'
+  - Wikipedia, 'Decompression (comics)'
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.2
+  - shot: wide
+    share: 0.35
+  - shot: medium
+    share: 0.2
+  - shot: close-up
+    share: 0.15
+  - shot: extreme-close-up
+    share: 0.05
+  - shot: insert
+    share: 0.05
+transitions:
+  - transition: moment-to-moment
+    share: 0.15
+  - transition: action-to-action
+    share: 0.5
+  - transition: subject-to-subject
+    share: 0.15
+  - transition: scene-to-scene
+    share: 0.1
+  - transition: aspect-to-aspect
+    share: 0.1
+camera:
+  eye_level: 0.45
+  low_angle: 0.35
+  high_angle: 0.2
+  dutch: 0.0
+  dutch_max_deg: 8.0
+composition:
+  - Strong horizontal lines
+  - 'Depth staging: foreground, midground, background'
+  - 'Scale contrast: small figures in big spaces'
+pacing: Two or three panels per beat; 25–40% silent panels. Low text density.
+grid:
+  policy: widescreen
+  max_rows: 3
+  max_cols: 1
+  gutter_px: 16.0
+lettering:
+  zone: edges
+  speakers_left_to_right: true
+  max_words_per_balloon: 10
+  headroom: 0.25
+  frame_breaks: sfx
+  captions: top-left

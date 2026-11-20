@@ -20,3 +20,31 @@ The rendering pipeline will read _exclusively_ the structured intermediates (not
 
 # A note on developing this project
 This is early development - please feel free to work with me on this prompt itself!
+
+# Usage (early)
+
+```sh
+uv sync
+uv run comicify init my-comic                         # prompt.md skeleton + comicify.toml
+cd my-comic                                     # commands default to the current directory
+uv run comicify author                          # clarify (incl. direction), then generate the storyboard
+uv run comicify render -b png -b pdf --appendix # build the chosen look's art, then render
+uv run comicify styles                          # browse the narrative / cinematography / art catalogue
+uv run comicify status                          # changed inputs; fresh/stale/pinned intermediates
+uv run pytest
+```
+
+Any Pydantic AI model string works (`anthropic:…`, `openai:…`, `google-gla:…`, `ollama:…`); set it per
+project in `comicify.toml`, via `COMICIFY_MODEL`, or with `--model`. `--model test` runs offline with
+placeholder output. See `DESIGN.md` for the architecture.
+
+Secrets and personal defaults go in a user-level config outside the repo,
+`~/.config/comicify/config.toml` (or `$COMICIFY_CONFIG`):
+
+```toml
+[env_files]                      # file contents exported as env vars, if not already set
+ANTHROPIC_API_KEY = "~/path/to/key.txt"
+
+[llm]
+model = "anthropic:claude-opus-5-5"
+```

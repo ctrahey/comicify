@@ -1,0 +1,55 @@
+schema_version: 1
+id: planimetric
+name: Planimetric Symmetry
+summary: Frontal, centered tableau framing with the camera perpendicular to the back wall (Wes 
+  Anderson); deadpan, symmetrical, precise.
+sources:
+  - David Bordwell, 'Shot-consciousness' (2007)
+  - kogonada, 'Wes Anderson // Centered' (2014)
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.15
+  - shot: wide
+    share: 0.3
+  - shot: medium
+    share: 0.3
+  - shot: close-up
+    share: 0.1
+  - shot: insert
+    share: 0.15
+transitions:
+  - transition: moment-to-moment
+    share: 0.05
+  - transition: action-to-action
+    share: 0.35
+  - transition: subject-to-subject
+    share: 0.3
+  - transition: scene-to-scene
+    share: 0.2
+  - transition: aspect-to-aspect
+    share: 0.1
+camera:
+  eye_level: 0.8
+  low_angle: 0.0
+  high_angle: 0.2
+  dutch: 0.0
+  dutch_max_deg: 0.0
+composition:
+  - Put the main subject on the vertical center line (placement.x = 0.5)
+  - Characters face the viewer or stand in exact profile
+  - Insert shots are strictly top-down views of objects
+  - 'Symmetric staging: pairs of characters at mirrored x (e.g. 0.3 and 0.7)'
+pacing: One panel per beat; occasional deadpan pause panel with identical framing and no dialogue.
+grid:
+  policy: regular
+  max_rows: 2
+  max_cols: 3
+  gutter_px: 28.0
+lettering:
+  zone: top-band
+  speakers_left_to_right: true
+  max_words_per_balloon: 14
+  headroom: 0.32
+  frame_breaks: none
+  captions: top-bar

@@ -1,0 +1,10 @@
+schema_version: 1
+narrative:
+  id: freytag
+  why: 'Cautionary tale: the dénouement is a catastrophe.'
+cinematography:
+  id: newspaper-strip
+  why: Casual and fun; a one-page strip.
+art:
+  id: sunday-funnies
+  why: "'The style is casual and fun.'"

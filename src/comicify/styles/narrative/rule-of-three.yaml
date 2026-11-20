@@ -1,0 +1,32 @@
+schema_version: 1
+id: rule-of-three
+name: Rule-of-Three Gag
+summary: Establish a pattern twice, break it on the third beat; the lesson (or joke) lives in the 
+  break.
+sources:
+  - Wikipedia, 'Rule of three (writing)'
+  - Joe Toplyn, Comedy Writing for Late-Night TV (2014)
+prompts:
+  - stage: shotlist
+    text: '`establish` and `reinforce` panels share camera, framing, and staging; only the `break` changes
+      the key variable.'
+slots:
+  - id: establish
+    purpose: First instance of the pattern
+    share: 0.25
+  - id: reinforce
+    purpose: 'Second instance, same framing: readers predict the third'
+    share: 0.25
+  - id: break
+    purpose: 'Third instance subverts the pattern: the edge case'
+    share: 0.3
+  - id: tag
+    purpose: Reaction beat
+    share: 0.2
+panels:
+  min: 3
+  max: 6
+suits:
+  - edge-case
+  - cautionary
+  - explainer

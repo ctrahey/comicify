@@ -1,0 +1,76 @@
+schema_version: 1
+id: superhero
+name: Superhero House Style
+summary: 'American superhero comics: dynamic idealized anatomy, confident inked lines with feathering,
+  cel-shaded color, spotted blacks, bold SFX.'
+sources:
+  - Stan Lee & John Buscema, How to Draw Comics the Marvel Way (1978)
+prompts: []
+abstraction: detailed
+line:
+  weight_px: 5.0
+  uniform: false
+  color: '#111111'
+color:
+  flat: false
+  anchors:
+    - '#1F4FA3'
+    - '#C8102E'
+    - '#F2B705'
+    - '#2B2140'
+    - '#4FA3E0'
+  guidance: Two or three cel-shading steps per form; saturated primaries for heroes; rim highlights.
+shading: Spot blacks for shadow masses; feathering (short tapered lines) at shadow edges; two-tone 
+  cel shading.
+lettering:
+  dialogue:
+    family: Comic Neue
+    weight: 700
+    size: 29.0
+    uppercase: true
+  caption:
+    family: Comic Neue
+    weight: 700
+    size: 25.0
+    uppercase: true
+  sfx:
+    family: Bangers
+    weight: 400
+    size: 84.0
+    uppercase: false
+  title:
+    family: Bangers
+    weight: 400
+    size: 72.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 26.0
+    uppercase: false
+  balloon: ellipse
+  balloon_fill: '#ffffff'
+  caption_fill: '#F2E27A'
+  stroke_px: 3.0
+  tail: wedge
+  caption_style: box
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#F2B705'
+    outline: '#111111'
+    outline_px: 5.0
+    halo: '#C8102E'
+    halo_px: 6.0
+    shadow: '#111111'
+    shadow_px: 6.0
+    max_rotation_deg: 14.0
+    scale: 1.25
+panel:
+  border_px: 4.0
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#111111'
+effects: []
+svg_notes: Use filled shadow shapes for cel shading; heroic poses but keep them readable — medium 
+  shots over extreme foreshortening.

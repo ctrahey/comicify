@@ -1,0 +1,35 @@
+schema_version: 1
+id: three-act
+name: Three-Act Structure
+summary: Setup establishes the user and their goal; confrontation escalates obstacles; resolution 
+  shows the outcome.
+sources:
+  - Aristotle, Poetics (c. 335 BCE)
+  - 'Syd Field, Screenplay: The Foundations of Screenwriting (1979)'
+prompts:
+  - stage: story
+    text: With few panels, merge setup with the inciting incident, and confrontation with the 
+      climax.
+slots:
+  - id: setup
+    purpose: Introduce the protagonist, context, and goal
+    share: 0.25
+  - id: inciting-incident
+    purpose: 'The event that disrupts the status quo: the problem appears'
+    share: 0.1
+  - id: confrontation
+    purpose: Attempts and obstacles; stakes rise
+    share: 0.35
+  - id: climax
+    purpose: 'The decisive moment: the product is used or a choice is made'
+    share: 0.15
+  - id: resolution
+    purpose: The new status quo and its payoff
+    share: 0.15
+panels:
+  min: 3
+  max: 12
+suits:
+  - pitch
+  - explainer
+  - before-after

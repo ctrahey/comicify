@@ -1,0 +1,58 @@
+schema_version: 1
+id: manga-dynamic
+name: Manga Dynamic Pacing
+summary: 'Decompressed, emotion-led pacing: many moment-to-moment and aspect-to-aspect transitions, extreme
+  close-ups of eyes and hands, reaction shots, tilted action.'
+sources:
+  - Scott McCloud, Understanding Comics (1993), ch. 3
+  - Hirohiko Araki, Manga in Theory and Practice (2017)
+prompts: []
+shot_mix:
+  - shot: establishing
+    share: 0.05
+  - shot: wide
+    share: 0.1
+  - shot: medium
+    share: 0.25
+  - shot: close-up
+    share: 0.25
+  - shot: extreme-close-up
+    share: 0.2
+  - shot: insert
+    share: 0.1
+  - shot: over-the-shoulder
+    share: 0.05
+transitions:
+  - transition: moment-to-moment
+    share: 0.2
+  - transition: action-to-action
+    share: 0.35
+  - transition: subject-to-subject
+    share: 0.15
+  - transition: scene-to-scene
+    share: 0.05
+  - transition: aspect-to-aspect
+    share: 0.25
+camera:
+  eye_level: 0.5
+  low_angle: 0.2
+  high_angle: 0.2
+  dutch: 0.1
+  dutch_max_deg: 20.0
+composition:
+  - Isolate reaction shots in small panels
+  - Use aspect-to-aspect montage of setting details for mood
+  - Tilt the camera on action and shock moments
+pacing: Two to four panels per beat; 20–30% wordless panels. Low text density.
+grid:
+  policy: varied
+  max_rows: 3
+  max_cols: 4
+  gutter_px: 12.0
+lettering:
+  zone: free
+  speakers_left_to_right: true
+  max_words_per_balloon: 12
+  headroom: 0.2
+  frame_breaks: sfx-and-captions
+  captions: straddle

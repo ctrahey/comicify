@@ -1,0 +1,44 @@
+# Author's prompt
+
+<author_prompt>
+{{ prompt }}
+</author_prompt>
+{% if revisions %}
+
+# Author's revision notes (apply in order, later overrides earlier)
+{% for r in revisions %}
+
+<revision file="{{ r.name }}">
+{{ r.text }}
+</revision>
+{% endfor %}
+{% endif %}
+{% if answers %}
+
+# Clarifications already answered
+
+{% for a in answers %}
+- Q: {{ a.question }}
+  A ({{ a.source }}): {{ a.answer }}
+{% endfor %}
+{% endif %}
+{% if prompt_diff %}
+
+# Changes to the author's prompt since the last clarification
+
+```diff
+{{ prompt_diff }}
+```
+{% endif %}
+{% if intermediates %}
+
+# Existing intermediates (current source of truth)
+{% for path, text in intermediates.items() %}
+
+<intermediate path="{{ path }}">
+{{ text }}
+</intermediate>
+{% endfor %}
+{% endif %}
+
+Evaluate this input.

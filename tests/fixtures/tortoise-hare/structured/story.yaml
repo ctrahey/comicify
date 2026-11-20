@@ -1,0 +1,157 @@
+schema_version: 1
+logline: The Hare naps mid-race trusting his Racer-Pacer watch to wake him at the last winnable 
+  moment, and it does, but the same app's own sneaker ad distracts him during the neck-and-neck 
+  sprint and the Tortoise wins.
+arc: "At the start line the smug Hare shows off his Keeper-Asleeper Racer-Pacer 5000 to admiring onlookers,
+  then bolts ahead. Far in the lead, he tells the watch to wake him when he can still win, and naps under
+  a tree. The Tortoise plods past, waving to onlookers. As the Tortoise nears the finish, the watch buzzes:
+  its finish-time bars show the Hare's max-pace finish beating the Tortoise's by just two seconds. The
+  Hare springs up and sprints neck-and-neck, but the Racer-Pacer itself pushes a Hare-Sneakers ad over
+  the screen. He fumbles with the tiny x, loses his stride, and the Tortoise crosses the line first while
+  the ad still glows on his wrist."
+takeaway: 'The alarm worked perfectly, and that is exactly why it hurts: a just-in-time alert leaves zero
+  margin, so anything our own app pushes in that window, like an ad, throws away the very win the feature
+  promised.'
+beats:
+  - id: watch-showoff
+    slot: exposition
+    kind: setup
+    name: The fancy watch
+    summary: At the start line, the Hare flaunts his Racer-Pacer 5000 to gawking onlookers while the
+      Tortoise chats with a neighbor; the starting flag drops.
+    purpose: Introduces the cast, the crowd the Hare performs for, and the watch, and starts the 
+      race in one panel.
+    features:
+      - race-tracking
+    characters:
+      - hare
+      - tortoise
+      - onlookers
+    set: meadow-course
+    panel_budget: 1
+  - id: nap-armed
+    slot: rising-action
+    kind: inciting
+    name: Wake me when I can win
+    summary: "Far ahead, the Hare lounges under a tree and speaks into his watch: 'Wake me up when I can
+      still win this race!' The watch shows 'Alarm set ✓'."
+    purpose: Shows the Hare's motivation (flaunt laziness without the fable's embarrassment) and how
+      he arms the feature.
+    features:
+      - win-window-alarm
+    characters:
+      - hare
+    set: meadow-course
+    panel_budget: 1
+  - id: tortoise-passes
+    slot: rising-action
+    kind: rising
+    name: Slow and steady
+    summary: The Tortoise strolls past the snoring Hare, waving to onlookers who point and giggle at
+      the sleeper.
+    purpose: Recreates the classic setback and lets the reader worry, while the watch stays silent 
+      because the Hare can still win.
+    features:
+      - race-tracking
+    characters:
+      - tortoise
+      - hare
+      - onlookers
+    set: meadow-course
+    panel_budget: 1
+  - id: watch-buzzes
+    slot: rising-action
+    kind: rising
+    name: BZZT
+    summary: "Split view: the Tortoise nears the finish banner in the distance while, under the tree,
+      the Hare's wrist buzzes loudly."
+    purpose: Shows the alarm firing late, just as the Tortoise closes in, building tension.
+    features:
+      - win-window-alarm
+    characters:
+      - hare
+      - tortoise
+    set: meadow-course
+    panel_budget: 1
+  - id: rule-revealed
+    slot: climax
+    kind: climax
+    name: SPRINT NOW!
+    summary: "Close-up of the watch: 'SPRINT NOW!' over two finish-time bars, Hare @ max 4:58 just shorter
+      than Tortoise @ avg 5:00, 'Margin: 0:02'."
+    purpose: 'Makes the alarm rule legible: it fires exactly when max-pace sprinting barely still wins,
+      leaving almost no margin.'
+    features:
+      - win-window-alarm
+      - race-tracking
+    characters:
+      - hare
+    set: meadow-course
+    panel_budget: 1
+  - id: the-sprint
+    slot: climax
+    kind: climax
+    name: Neck and neck
+    summary: The Hare launches into a blur of speed and pulls nearly level with the Tortoise just 
+      before the finish; onlookers gasp.
+    purpose: 'Proves the feature worked as designed: the win is right there, but only with zero delay.'
+    features:
+      - win-window-alarm
+    characters:
+      - hare
+      - tortoise
+      - onlookers
+    set: finish-line
+    panel_budget: 1
+  - id: ad-pops
+    slot: falling-action
+    kind: falling
+    name: 20% off!
+    summary: "Mid-stride, the watch buzzes again: a Racer-Pacer branded ad, 'NEW Hare-Sneakers! 20% off',
+      covers the screen with Shop and a tiny x."
+    purpose: Introduces the product decision that undermines the core feature, clearly coming from 
+      the same app.
+    features: []
+    characters:
+      - hare
+    set: finish-line
+    panel_budget: 1
+  - id: fumble
+    slot: falling-action
+    kind: falling
+    name: Where's the x?!
+    summary: The Hare squints and jabs at the tiny x, accidentally hitting Shop, stumbling and 
+      slowing while the Tortoise inches ahead.
+    purpose: Shows the few seconds the ad steals are exactly the margin the alarm left.
+    features: []
+    characters:
+      - hare
+      - tortoise
+    set: finish-line
+    panel_budget: 1
+  - id: tortoise-wins
+    slot: denouement
+    kind: resolution
+    name: Slow and steady, again
+    summary: The Tortoise breaks the ribbon by a nose as onlookers cheer; he looks pleasantly 
+      surprised.
+    purpose: "Delivers the catastrophe: the fable's ending happens anyway, despite the feature working."
+    features: []
+    characters:
+      - tortoise
+      - hare
+      - onlookers
+    set: finish-line
+    panel_budget: 1
+  - id: ad-still-there
+    slot: denouement
+    kind: punchline
+    name: Shop now?
+    summary: "The deflated Hare stares at his wrist, where the Racer-Pacer happily shows a sneaker shopping
+      page: 'Run faster in Hare-Sneakers!'"
+    purpose: 'Lands the lesson on the product team: their own ad cost the win their alarm earned.'
+    features: []
+    characters:
+      - hare
+    set: finish-line
+    panel_budget: 1
