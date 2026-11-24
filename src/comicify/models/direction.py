@@ -99,8 +99,16 @@ class GridPolicy(StrEnum):
     VARIED = "varied"  # weight drives size freely; key panels may span rows
 
 
+class ActBreak(StrEnum):
+    PAGE = "page"  # each act starts on a new page, with its title
+    ROW = "row"  # each act starts a new row, with its title
+    NONE = "none"
+
+
 class PageGrid(Model):
     policy: GridPolicy = GridPolicy.TIERS
+    act_break: ActBreak = ActBreak.PAGE
+    scene_break: bool = Field(default=True, description="Each scene starts a new row.")
     max_rows: int = Field(default=3, ge=1, le=4)
     max_cols: int = Field(default=4, ge=1, le=5)
     gutter_px: float = Field(default=18, ge=0, le=60, description="At 1080px page height.")
@@ -229,6 +237,7 @@ class PanelStyle(Model):
     corner_radius_px: float = Field(default=0, ge=0, le=40)
     paper: HexColor = "#fbf7f0"
     ink: HexColor = "#1b1b1f"
+    border: HexColor | None = Field(default=None, description="Panel border; defaults to ink.")
 
 
 class Halftone(Model):
@@ -284,13 +293,27 @@ class Wobble(Model):
     seed: int = 7
 
 
-Effect = Annotated[Halftone | Grain | Misregister | Monochrome | Posterize | Wobble,
+class Glow(Model):
+    """Light bloom: shapes emit a soft halo (holograms, neon, screens)."""
+
+    kind: Literal["glow"] = "glow"
+    radius_px: float = Field(default=6, gt=0, le=40)
+    strength: float = Field(default=0.9, ge=0, le=2)
+
+
+Effect = Annotated[Halftone | Grain | Misregister | Monochrome | Posterize | Wobble | Glow,
                    Field(discriminator="kind")]
+
+
+class ArtMethod(StrEnum):
+    PER_PANEL = "per-panel"  # the model draws each whole panel from its guide
+    COMPOSITE = "composite"  # pose drawings pasted onto backdrops (cheaper, stiffer)
 
 
 class ArtPack(Pack):
     KIND = "art"
 
+    method: ArtMethod = ArtMethod.PER_PANEL
     abstraction: Abstraction = Abstraction.CARTOON
     line: Line
     color: ColorSpec = Field(default_factory=ColorSpec)

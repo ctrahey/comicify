@@ -65,15 +65,17 @@ class Letterer:
 
     # --- entry point -------------------------------------------------------------------
     def draw(self, letter: LetterPlacement, el: TextElement, box: Box, target: Point | None,
-             chained: Box | None, out: Layers) -> None:
+             chained: Box | None, out: Layers) -> Box:
+        """Draw one letter; returns the box actually used (captions grow to fit)."""
         if letter.kind == TextKind.CAPTION:
-            self._caption(el, box, out)
+            return self._caption(el, box, out)
         elif letter.kind == TextKind.SFX:
             self._sfx(el, letter, box, out)
         elif letter.kind == TextKind.DEVICE:
             self._device(el, box, target, out)
         else:
             self._balloon(el, letter, box, target, chained, out)
+        return box
 
     # --- balloons ----------------------------------------------------------------------
     def _balloon(self, el: TextElement, letter: LetterPlacement, box: Box,
@@ -145,13 +147,16 @@ class Letterer:
         out.texts += block.place(cx, cy - block.height / 2, ink)
 
     # --- captions ----------------------------------------------------------------------
-    def _caption(self, el: TextElement, box: Box, out: Layers) -> None:
+    def _caption(self, el: TextElement, box: Box, out: Layers) -> Box:
         th, lt = self.theme, self.lettering
         style = CaptionStyle(lt.caption_style)
         font = th.font(TextRole.CAPTION, self.scale)
         pad = font.size * 0.45
+        # Captions keep their planned width and position but grow to fit the look's
+        # lettering (looks differ in font metrics from the reference plan).
         block = tx.rich_fit(el.text, font, self._bold(font), el.emphasis, box.w - 2 * pad,
-                            box.h - 2 * pad)
+                            box.h * 1.6 - 2 * pad, min_scale=0.8)
+        box = Box(box.x, box.y, box.w, max(box.h, block.height + 2 * pad))
         color = th.ink
         if style == CaptionStyle.BOX:
             out.fills.append(Rect(box.x, box.y, box.w, box.h,
@@ -162,6 +167,7 @@ class Letterer:
             color = th.paper
         out.texts += block.place(box.x + pad, box.y + (box.h - block.height) / 2, color,
                                  align="left")
+        return box
 
     # --- device text -------------------------------------------------------------------
     def _device(self, el: TextElement, box: Box, target: Point | None, out: Layers) -> None:

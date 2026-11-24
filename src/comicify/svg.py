@@ -71,6 +71,26 @@ def anchors(svg: str) -> dict[str, tuple[float, float]]:
     return out
 
 
+def view_box(svg: str) -> tuple[float, float]:
+    parts = [float(v) for v in ET.fromstring(svg).get("viewBox", "0 0 1 1").replace(",", " ").split()]
+    return parts[2], parts[3]
+
+
+def figure_anchors(svg: str) -> dict[str, dict[str, tuple[float, float]]]:
+    """Per-character anchors on a panel drawing: data-head-<id>="x,y", data-hand-<id>="x,y"."""
+    out: dict[str, dict[str, tuple[float, float]]] = {}
+    for attr, value in ET.fromstring(svg).attrib.items():
+        for kind in ("head", "hand"):
+            prefix = f"data-{kind}-"
+            if attr.startswith(prefix):
+                try:
+                    x, y = (float(v) for v in value.replace(" ", ",").split(",") if v)
+                    out.setdefault(attr[len(prefix):], {})[kind] = (x, y)
+                except ValueError:
+                    pass
+    return out
+
+
 def validate(svg: str, canvas: Canvas, anchors: tuple[str, ...] = ()) -> list[str]:
     """Problems with a generated SVG asset (empty list = acceptable)."""
     problems: list[str] = []

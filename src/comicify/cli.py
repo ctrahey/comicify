@@ -134,6 +134,78 @@ class AcceptDefaultsUI:
         return None
 
 
+class RichEditorialUI:
+    PRIORITY = {"high": "bold red", "medium": "yellow", "low": "dim"}
+
+    def status(self, message: str) -> None:
+        console.print(f"[dim]… {escape(message)}[/dim]")
+
+    def show_assessment(self, review) -> None:
+        console.print(Panel(escape(review.assessment),
+                            title=f"Script editor · {len(review.notes)} notes", expand=False))
+
+    def decide(self, note, index: int, total: int):
+        from .models.editorial import Decision
+        style = self.PRIORITY.get(str(note.priority), "")
+        console.print()
+        console.print(f"[bold cyan]Note {index}/{total}[/bold cyan] [{style}]{note.priority}"
+                      f"[/{style}] · {note.principle} · {note.kind} · "
+                      f"[dim]{escape(', '.join(note.targets))}[/dim]"
+                      + (" [dim](automated check)[/dim]" if note.source == "lint" else ""))
+        console.print(f"[bold]Problem:[/bold] {escape(note.problem)}")
+        console.print(f"[bold]Proposal:[/bold] {escape(note.proposal)}")
+        reply = Prompt.ask("[cyan]Enter = accept · n = reject · or type your own direction[/cyan]",
+                           default="", show_default=False).strip()
+        if reply.lower() in ("n", "no", "reject"):
+            return Decision.REJECT, ""
+        if reply:
+            return Decision.MODIFY, reply
+        return Decision.ACCEPT, ""
+
+
+class AcceptEditorialUI(RichEditorialUI):
+    """Non-interactive: accept high and medium priority notes, reject polish."""
+
+    def decide(self, note, index: int, total: int):
+        from .models.editorial import Decision
+        ok = str(note.priority) in ("high", "medium")
+        console.print(f"[cyan]Note {index}/{total}[/cyan] {'accept' if ok else 'reject'}: "
+                      f"{escape(note.proposal)}")
+        return (Decision.ACCEPT if ok else Decision.REJECT), ""
+
+
+def _editorial_round(project: Project, llm, accept_defaults: bool, workers: int) -> None:
+    from .stages import editorial
+    outcome = editorial.run(project, llm,
+                            AcceptEditorialUI() if accept_defaults else RichEditorialUI())
+    if outcome.session_path:
+        console.print(f"Editorial notes: [bold]{project.rel(outcome.session_path)}[/bold] "
+                      f"({outcome.accepted}/{outcome.total} accepted)")
+    if outcome.accepted:
+        console.print("[bold]Applying accepted notes…[/bold]")
+        _run(Context(project, llm, frozenset(), workers), GENERATION_STAGES)
+
+
+def _run_looks(project: Project, llm, workers: int, only: frozenset[str] | None = None,
+               stages=None) -> None:
+    """Build every look the comic uses (scenes may override the comic's art style)."""
+    from .store import Store
+    for look in Store(project).looks():
+        console.print(f"[dim]look: {look}[/dim]")
+        ctx = Context(project, llm, frozenset(), workers, look=look, only=only)
+        try:
+            run_stages(ctx, stages or LOOK_STAGES, RichReporter())
+        except StageFailed as e:
+            if e.stage != "panel-art":
+                console.print(f"[red]{escape(str(e))}[/red]")
+                raise typer.Exit(1) from e
+            # A panel that failed to draw doesn't block the comic: it renders as a
+            # thumbnail, and the next render retries it.
+            console.print(f"[yellow]{len(e.failures)} panel(s) not drawn (shown as "
+                          f"thumbnails; re-run render to retry):[/yellow] "
+                          + ", ".join(job.key.split(':', 1)[1] for job, _ in e.failures))
+
+
 def _escape_all(value):
     """Escape Rich markup in every string of a dumped model (LLM output may contain brackets)."""
     if isinstance(value, dict):
@@ -202,6 +274,8 @@ def author(
         help="Don't ask: accept every question's stated assumption.")] = False,
     force: ForceOpt = None,
     workers: Annotated[int, typer.Option(help="Concurrent LLM calls per stage.")] = 4,
+    edit: Annotated[bool, typer.Option(
+        help="Run a script-editor round after generating the storyboard.")] = True,
 ) -> None:
     """Evaluate and clarify a comic prompt, then generate the structured storyboard."""
     project = _project(path)
@@ -235,8 +309,25 @@ def author(
 
     console.print()
     _run(Context(project, llm, _force(force), workers), GENERATION_STAGES)
+    if edit:
+        _editorial_round(project, llm, accept_defaults, workers)
     console.print(f"[green]complete![/green] review the artifacts in "
-                  f"[bold]{project.structured_dir}[/bold]")
+                  f"[bold]{project.structured_dir}[/bold] — then "
+                  f"[bold]comicify render --thumbnails[/bold]")
+
+
+@app.command("edit")
+def edit_cmd(
+    path: ProjectArg = Path("."),
+    model: ModelOpt = None,
+    accept_defaults: Annotated[bool, typer.Option(
+        help="Don't ask: accept high and medium priority notes.")] = False,
+    workers: Annotated[int, typer.Option(help="Concurrent LLM calls per stage.")] = 4,
+) -> None:
+    """Run another script-editor round: review, decide, and apply accepted notes."""
+    project = _project(path)
+    _locked(project)
+    _editorial_round(project, _llm(project, model, False), accept_defaults, workers)
 
 
 @app.command()
@@ -251,7 +342,7 @@ def assets(
     project = _project(path)
     _locked(project)
     _show_direction(project)
-    _run(Context(project, _llm(project, model, no_cache), _force(force), workers), LOOK_STAGES)
+    _run_looks(project, _llm(project, model, no_cache), workers)
 
 
 @app.command()
@@ -270,6 +361,9 @@ def render(
         help="Append a 'behind the panels' page with provenance and token usage.")] = True,
     appendix: Annotated[bool, typer.Option(
         help="Append pages showing every structured intermediate.")] = False,
+    thumbnails: Annotated[bool, typer.Option(
+        "--thumbnails", help="Storyboard fidelity: silhouettes and real lettering, no art "
+                             "generation (free). Iterate on layout here.")] = False,
     model: ModelOpt = None,
     workers: Annotated[int, typer.Option(help="Concurrent LLM calls per stage.")] = 4,
 ) -> None:
@@ -281,19 +375,22 @@ def render(
                       "render correctly where the bundled fonts are installed.[/red]")
         raise typer.Exit(2)
     _show_direction(project)
+    from .render.compose import Fidelity
+    from .store import Store
+    if thumbnails:
+        skip_assets = True
     ctx = Context(project, None if skip_assets else _llm(project, model, False), frozenset(),
                   workers)
     if skip_assets:
-        _run(ctx, LOOK_STAGES[:1])  # vendor the art pack only; no generation
+        _run_looks(project, None, workers, stages=LOOK_STAGES[:1])  # vendor art packs only
     else:
-        _run(ctx, LOOK_STAGES)
+        _run_looks(project, ctx.llm, workers)
     backends = _force(backend) or {"svg", "png"}
-    from .store import Store
     look = Store(project).direction().art.id
     result = render_comic(project, look, sorted(backends), fonts, colophon=colophon,
-                          appendix=appendix)
-    for m in result.missing_assets:
-        console.print(f"[yellow]placeholder:[/yellow] {escape(m)} is missing")
+                          appendix=appendix,
+                          fidelity=Fidelity.THUMBNAILS if thumbnails else Fidelity.FINAL)
+    _report_missing(result.missing_assets)
     console.print(f"[green]complete![/green] find your comic in [bold]{result.out_dir}[/bold]")
 
 
@@ -330,6 +427,49 @@ def status(path: ProjectArg = Path(".")) -> None:
         entry = manifest.entries.get(rel)
         table.add_row(rel, f"[{style[st]}]{st}[/{style[st]}]", entry.produced_by if entry else "")
     console.print(table)
+
+
+def _report_missing(missing: list[str]) -> None:
+    if not missing:
+        return
+    shown = missing[:4]
+    for m in shown:
+        console.print(f"[yellow]not drawn yet (thumbnail shown):[/yellow] {escape(m)}")
+    if len(missing) > len(shown):
+        console.print(f"[yellow]…and {len(missing) - len(shown)} more[/yellow]")
+
+
+@app.command()
+def proof(
+    path: ProjectArg = Path("."),
+    count: Annotated[int, typer.Option(help="How many representative panels to draw.")] = 3,
+    panel: Annotated[list[str] | None, typer.Option(
+        "--panel", "-p", help="Draw these panel ids instead of an automatic sample.")] = None,
+    backend: Annotated[list[str] | None, typer.Option(
+        "--backend", "-b", help=f"Output format(s): {', '.join(BACKENDS)}.")] = None,
+    model: ModelOpt = None,
+    workers: Annotated[int, typer.Option(help="Concurrent LLM calls per stage.")] = 4,
+) -> None:
+    """Spot-check the look: draw a few representative panels at full fidelity and render the
+    comic with the rest as thumbnails — before paying for every panel."""
+    from .pipeline.look import PANEL_ART, ForMethod, proof_panels
+    from .render.compose import Fidelity
+    from .store import Store
+    project = _project(path)
+    _locked(project)
+    _show_direction(project)
+    llm = _llm(project, model, False)
+    base = Context(project, llm, frozenset(), workers)
+    chosen = _force(panel) and sorted(_force(panel)) or proof_panels(base, count)
+    console.print(f"[bold]proofing:[/bold] {', '.join(chosen)}")
+    # Foundations for every look, then finished art for the sampled panels only.
+    _run_looks(project, llm, workers, only=frozenset(chosen),
+               stages=[*LOOK_STAGES[:4], ForMethod(PANEL_ART, "per-panel")])
+    look = Store(project).direction().art.id
+    result = render_comic(project, look, sorted(_force(backend) or {"png", "pdf"}),
+                          FontMode.OUTLINE, colophon=True, fidelity=Fidelity.FINAL)
+    console.print(f"[green]proof ready:[/green] [bold]{result.out_dir}[/bold] "
+                  f"({len(chosen)} finished panels; the rest are thumbnails)")
 
 
 @app.command()

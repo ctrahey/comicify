@@ -38,7 +38,7 @@ class LLMStage[T: BaseModel]:
     check: Callable[[Context, Item, T], list[str]] | None = None
     finalize: Callable[[Context, Item, T], T] | None = None
     content: Callable[[T], BaseModel | str | bytes] | None = None
-    max_tokens: int = 8_000
+    max_tokens: int = 16_000
 
     def jobs(self, ctx: Context) -> list[Job]:
         items = self.items(ctx) if self.items else [None]

@@ -27,11 +27,20 @@ class ScreenElementKind(StrEnum):
     CHART = "chart"
 
 
+class Tone(StrEnum):
+    NEUTRAL = "neutral"
+    POSITIVE = "positive"  # approve, confirm, success (green)
+    NEGATIVE = "negative"  # deny, delete, error (red)
+    ACCENT = "accent"  # the product's primary action
+
+
 class ScreenElement(Model):
     kind: ScreenElementKind
     label: str | None = Field(default=None, description="Short label, if any.")
     content: str | None = Field(default=None, description="Text or value shown, if any.")
     emphasis: bool = False
+    tone: Tone = Field(default=Tone.NEUTRAL,
+                       description="Semantic color; consecutive buttons render side by side.")
 
 
 class Screen(Model):

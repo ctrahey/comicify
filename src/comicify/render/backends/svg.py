@@ -9,7 +9,9 @@ from xml.sax.saxutils import escape, quoteattr
 
 from ... import svg as svgutil
 from ...fonts import FontFace, metrics
-from ...models.direction import Grain, Halftone, Misregister, Monochrome, Posterize, Wobble
+from ...models.direction import (
+    Glow, Grain, Halftone, Misregister, Monochrome, Posterize, Wobble,
+)
 from ..scene import (
     Asset, Ellipse, Group, Node, Overlay, Paint, PathNode, Rect, Scene, ScenePage, Text,
 )
@@ -37,7 +39,7 @@ def _paint(p: Paint) -> str:
     return " ".join(attrs)
 
 
-_EFFECT_ORDER = {"wobble": 0, "posterize": 1, "monochrome": 2, "misregister": 3}
+_EFFECT_ORDER = {"wobble": 0, "posterize": 1, "monochrome": 2, "glow": 3, "misregister": 4}
 
 
 def _face_css_name(face: FontFace) -> str:
@@ -144,6 +146,13 @@ class SvgWriter:
                     f'numOctaves="2" seed="{e.seed}" result="noise"/>'
                     f'<feDisplacementMap in="SourceGraphic" in2="noise" scale="{e.scale_px * 2}" '
                     f'xChannelSelector="R" yChannelSelector="G"/>')
+        elif isinstance(e, Glow):
+            body = (f'<feGaussianBlur in="SourceGraphic" stdDeviation="{_n(e.radius_px)}" '
+                    f'result="blur"/>'
+                    f'<feComponentTransfer in="blur" result="bloom"><feFuncA type="linear" '
+                    f'slope="{_n(e.strength)}"/></feComponentTransfer>'
+                    f'<feMerge><feMergeNode in="bloom"/><feMergeNode in="SourceGraphic"/>'
+                    f'</feMerge>')
         elif isinstance(e, Misregister):
             body = (f'<feFlood flood-color="{e.color}"/>'
                     f'<feComposite in2="SourceAlpha" operator="in"/>'

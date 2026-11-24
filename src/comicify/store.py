@@ -114,6 +114,23 @@ class Store:
     def style(self) -> Style:
         return self.load(Style)
 
+    def panel_look(self, panel_id: str) -> str:
+        """The art look a panel uses: its scene's override, else the comic's art style."""
+        story = self.story()
+        beat = next((p.beat for p in self.shotlist().panels if p.id == panel_id), None)
+        scene_id = story.scene_of(beat) if beat else None
+        scene = next((sc for sc in story.scenes if sc.id == scene_id), None)
+        return (scene.look if scene and scene.look else None) or self.direction().art.id
+
+    def looks(self) -> list[str]:
+        """Every look the comic uses, the comic's own first."""
+        primary = self.direction().art.id
+        extra = [sc.look for sc in self.story().scenes if sc.look and sc.look != primary]
+        return [primary, *dict.fromkeys(extra)]
+
+    def with_look(self, look: str) -> Store:
+        return Store(self.project, look)
+
     def character_ids(self) -> list[str]:
         return [m.id for m in self.cast().members]
 
@@ -134,6 +151,13 @@ class Store:
 
     def set_backdrop_path(self, id: str) -> Path:
         return self.look_assets / "sets" / f"{id}.svg"
+
+    def panel_art_path(self, panel_id: str) -> Path:
+        return self.look_assets / "panels" / f"{panel_id}.svg"
+
+    def guide_path(self, panel_id: str) -> Path:
+        """Per-panel composition guide (look-independent)."""
+        return self.project.structured_dir / "guides" / f"{panel_id}.svg"
 
     def prop_art_path(self, id: str) -> Path:
         return self.look_assets / "props" / f"{id}.svg"

@@ -13,7 +13,7 @@ from ..store import Store
 from .backends import BACKENDS, FontMode
 from .appendix import appendix_pages
 from .colophon import colophon_page, gather
-from .compose import Composer
+from .compose import Composer, Fidelity
 
 RENDERER_VERSION = 2
 
@@ -33,13 +33,14 @@ def next_version_dir(project: Project, look: str) -> Path:
 
 
 def render(project: Project, look: str, backends: list[str], font_mode: FontMode,
-           colophon: bool = True, appendix: bool = False) -> RenderResult:
+           colophon: bool = True, appendix: bool = False,
+           fidelity: str = Fidelity.FINAL) -> RenderResult:
     unknown = [b for b in backends if b not in BACKENDS]
     if unknown:
         raise ValueError(f"Unknown backend(s) {unknown}; available: {sorted(BACKENDS)}")
 
     store = Store(project, look)
-    composer = Composer(store)
+    composer = Composer(store, fidelity)
     scene = composer.compose()
     missing = sorted(set(composer.missing))
     if colophon:
@@ -56,7 +57,7 @@ def render(project: Project, look: str, backends: list[str], font_mode: FontMode
                                       paper="#ffffff")
         mono = {p.face for page in scene.pages for p in page.walk() if hasattr(p, "face")}
         scene.fonts = sorted(set(scene.fonts) | mono, key=lambda f: f.key)
-    out = next_version_dir(project, look)
+    out = next_version_dir(project, "thumbnails" if fidelity == Fidelity.THUMBNAILS else look)
     out.mkdir(parents=True)
     files: list[Path] = []
     for name in backends:
@@ -69,6 +70,7 @@ def render(project: Project, look: str, backends: list[str], font_mode: FontMode
     (out / "render.json").write_text(json.dumps({
         "renderer_version": RENDERER_VERSION,
         "look": look,
+        "fidelity": fidelity,
         "backends": backends,
         "font_mode": font_mode,
         "missing_assets": missing,

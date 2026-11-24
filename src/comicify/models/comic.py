@@ -17,6 +17,8 @@ class PanelSlot(Model):
 
 class Page(Model):
     id: Slug
+    act: Slug | None = Field(default=None, description="Act this page belongs to.")
+    act_title: str | None = Field(default=None, description="Shown when an act starts here.")
     rows: int = Field(ge=1)
     cols: int = Field(ge=1)
     slots: list[PanelSlot]

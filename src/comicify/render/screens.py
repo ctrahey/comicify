@@ -84,9 +84,17 @@ def screen_nodes(screen: Screen, box: Box, theme: Theme) -> Group:
     inner = Box(box.x + pad, box.y + pad, box.w - 2 * pad, box.h - 2 * pad)
     base = theme.font(TextRole.DEVICE)
 
+    groups: list[list[ScreenElement]] = []
+    for el in screen.elements:  # consecutive buttons share a row
+        if el.kind == K.BUTTON and groups and groups[-1][-1].kind == K.BUTTON:
+            groups[-1].append(el)
+        else:
+            groups.append([el])
     for scale in (1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.42, 0.35):
-        font = base.scaled(scale * inner.h / 300)  # device type scales with the screen
-        rows = [_row(el, inner, font, theme) for el in screen.elements]
+        # Device type scales with the screen, but never below legibility.
+        font = base.scaled(max(scale * inner.h / 300, 12 / base.size))
+        rows = [_button_row(g, inner, font, theme) if len(g) > 1 else _row(g[0], inner, font, theme)
+                for g in groups]
         gap = font.size * 0.45
         total = sum(r.height for r in rows) + gap * max(0, len(rows) - 1)
         if total <= inner.h:
@@ -98,6 +106,33 @@ def screen_nodes(screen: Screen, box: Box, theme: Theme) -> Group:
         y += r.height + gap
     g.clip = Rect(box.x, box.y, box.w, box.h, Paint(), rx=radius)
     return g
+
+
+TONES = {"positive": "#2e9e5b", "negative": "#d64541"}
+
+
+def _tone(el: ScreenElement, theme: Theme) -> str:
+    if el.tone in TONES:
+        return TONES[el.tone]
+    return theme.device_alert if el.emphasis else theme.device_accent
+
+
+def _button_row(els: list[ScreenElement], box: Box, font: tx.Font, theme: Theme) -> _Row:
+    gap = font.size * 0.5
+    w = (box.w - gap * (len(els) - 1)) / len(els)
+    blocks = [tx.fit(" ".join(filter(None, [e.label, e.content])) or "OK", font, w * 0.82,
+                     font.line_height * 1.05, min_scale=0.45)
+              for e in els]
+    h = max(b.height for b in blocks) + font.size * 0.7
+
+    def row(y: float) -> list[Node]:
+        out: list[Node] = []
+        for i, (e, b) in enumerate(zip(els, blocks)):
+            x = box.x + i * (w + gap)
+            out += [Rect(x, y, w, h, Paint(_tone(e, theme)), rx=h / 2),
+                    b.place(x + w / 2, y + (h - b.height) / 2, "#ffffff")]
+        return out
+    return _Row(h, row)
 
 
 def _row(el: ScreenElement, box: Box, font: tx.Font, theme: Theme) -> _Row:
@@ -129,7 +164,7 @@ def _row(el: ScreenElement, box: Box, font: tx.Font, theme: Theme) -> _Row:
 
         def button(y: float) -> list[Node]:
             return [Rect(box.x + box.w * 0.08, y, box.w * 0.84, h,
-                         Paint(alert if el.emphasis else accent), rx=h / 2),
+                         Paint(_tone(el, theme)), rx=h / 2),
                     b.place(cx, y + font.size * 0.35, theme.device_bg)]
         return _Row(h, button)
 

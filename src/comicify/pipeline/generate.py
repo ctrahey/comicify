@@ -30,11 +30,14 @@ from ..models import (
     SubjectProduct,
 )
 from ..models.shotlist import Angle
+from ..direction import available
+from ..models.direction import Axis
 from ..sessions import all_answers
 from ..stages.evaluate import revisions
 from .core import Context
 from .direction import PacksStage, direction_stage
 from .composition import CompositionStage
+from .guides import GuidesStage
 from .layout import LayoutStage
 from .llmstage import Item, LLMStage
 
@@ -52,6 +55,15 @@ def author_context(ctx: Context) -> dict[str, Any]:
         "revisions": revisions(ctx.project),
         "answers": all_answers(ctx.project),
     }
+
+
+def editorial_inputs(ctx: Context) -> list[Path]:
+    return list(ctx.project.session_files("editorial"))
+
+
+def editorial_context(ctx: Context) -> dict[str, Any]:
+    from ..stages.editorial import accepted_directions
+    return {"editorial": accepted_directions(ctx.project)}
 
 
 def path_of(model, id_from_item: bool = False):
@@ -105,6 +117,37 @@ def check_story(ctx: Context, item: Item, s: Story) -> list[str]:
     order = [slots.index(x) for x in used if x in slots]
     if order != sorted(order):
         problems.append(f"beats must follow the pattern's slot order {slots}")
+    acts = [a.id for a in s.acts]
+    scenes = {sc.id: sc for sc in s.scenes}
+    if not acts or not scenes:
+        problems.append("the story needs at least one act and one scene")
+    problems += _dupes("act", acts) + _dupes("scene", [sc.id for sc in s.scenes])
+    arts = available(ctx.project)[Axis.ART]
+    for sc in s.scenes:
+        if sc.look and sc.look not in arts:
+            problems.append(f"scene {sc.id}: unknown art pack {sc.look!r}")
+        if sc.act not in acts:
+            problems.append(f"scene {sc.id}: unknown act {sc.act!r}")
+    for b in s.beats:
+        if b.act not in acts:
+            problems.append(f"beat {b.id}: unknown act {b.act!r} (acts: {acts})")
+        sc = scenes.get(b.scene)
+        if sc is None:
+            problems.append(f"beat {b.id}: unknown scene {b.scene!r}")
+        else:
+            if sc.act != b.act:
+                problems.append(f"beat {b.id}: scene {sc.id} belongs to act {sc.act}, not {b.act}")
+            if b.set and b.set != sc.set:
+                problems.append(f"beat {b.id}: a scene stays in one set; scene {sc.id} is in "
+                                f"{sc.set!r}, the beat says {b.set!r} — start a new scene")
+    for label, seq in (("act", [b.act for b in s.beats]), ("scene", [b.scene for b in s.beats])):
+        seen, last = set(), None
+        for x in seq:
+            if x != last and x in seen:
+                problems.append(f"beats of {label} {x!r} must be contiguous (don't interleave)")
+                break
+            seen.add(x)
+            last = x
     for b in s.beats:
         problems += [f"beat {b.id}: unknown character {c!r} (cast: {sorted(cast)})"
                      for c in b.characters if c not in cast]
@@ -214,12 +257,15 @@ CAST = LLMStage(
 
 STORY = LLMStage(
     name="story", output_type=Story, output=path_of(Story),
-    inputs=lambda ctx, _: [*author_inputs(ctx), *(ctx.store.path(m) for m in
-                                                   (Brief, SubjectProduct, Cast, NarrativePack))],
-    context=lambda ctx, _: {**author_context(ctx), **texts(ctx, Brief, SubjectProduct, Cast),
+    inputs=lambda ctx, _: [*author_inputs(ctx), *editorial_inputs(ctx),
+                           *(ctx.store.path(m) for m in
+                             (Brief, SubjectProduct, Cast, NarrativePack))],
+    context=lambda ctx, _: {**author_context(ctx), **editorial_context(ctx),
+                            **texts(ctx, Brief, SubjectProduct, Cast),
                             "pattern": ctx.store.text(NarrativePack),
+                            "art_ids": sorted(available(ctx.project)[Axis.ART]),
                             "guidance": guidance(ctx, "story", NarrativePack)},
-    check=check_story,
+    check=check_story, max_tokens=24_000,
 )
 
 
@@ -281,8 +327,9 @@ SHOTLIST = LLMStage(
     inputs=lambda ctx, _: [*(ctx.store.path(m) for m in (Brief, SubjectProduct, Story, Cast,
                                                           Props, NarrativePack,
                                                           CinematographyPack)),
-                           *character_paths(ctx), *set_paths(ctx)],
+                           *character_paths(ctx), *set_paths(ctx), *editorial_inputs(ctx)],
     context=lambda ctx, _: {**texts(ctx, Brief, SubjectProduct, Story, Cast, Props),
+                            **editorial_context(ctx),
                             "characters": _character_vocab(ctx), "sets": _sets_summary(ctx),
                             "cinematography": ctx.store.text(CinematographyPack),
                             "guidance": guidance(ctx, "shotlist", NarrativePack,
@@ -290,10 +337,10 @@ SHOTLIST = LLMStage(
                             "max_poses": MAX_POSES_PER_CHARACTER,
                             "max_words": ctx.store.cinematography().lettering
                             .max_words_per_balloon},
-    check=check_shotlist, max_tokens=16_000,
+    check=check_shotlist, max_tokens=32_000,
 )
 
 DIRECTION = direction_stage(author_inputs, author_context)
 
 GENERATION_STAGES = [BRIEF, DIRECTION, PacksStage(), PRODUCT, CAST, STORY, CHARACTER, SET, PROPS,
-                     SHOTLIST, LayoutStage(), CompositionStage()]
+                     SHOTLIST, LayoutStage(), CompositionStage(), GuidesStage()]

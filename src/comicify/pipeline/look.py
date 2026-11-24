@@ -1,6 +1,8 @@
 """The art layer: per-look stages, run late and independently of the storyboard.
 
-    look → style → fonts → character-model* → character-pose* → set-backdrop* → prop-art*
+    look → style → fonts → character-model* → then, by the art pack's method:
+        per-panel:  panel-art*  (each panel drawn whole, from its guide)
+        composite:  character-pose* → set-backdrop* → prop-art*
 
 A *look* is one art pack applied to the storyboard. Every look has its own
 style.yaml and assets/<look>/, so trying another art style never touches the
@@ -167,7 +169,7 @@ def _art_inputs(ctx: Context) -> list[Path]:
 
 CHARACTER_MODEL = _svg_stage(
     "character-model", svg.CHARACTER_CANVAS, anchors=svg.FIGURE_ANCHORS,
-    items=lambda ctx: list(ctx.store.character_ids()),
+    items=lambda ctx: look_characters(ctx),
     output=lambda ctx, cid: ctx.store.character_model_path(cid),
     inputs=lambda ctx, cid: [ctx.store.path(Character, cid), *_art_inputs(ctx)],
     context=lambda ctx, cid: {
@@ -218,5 +220,127 @@ PROP_ART = _svg_stage(
                               "canvas": svg.PROP_CANVAS},
 )
 
-LOOK_STAGES = [LookStage(), STYLE, FontsStage(), CHARACTER_MODEL, CHARACTER_POSE,
-               SET_BACKDROP, PROP_ART]
+# --- per-panel art ------------------------------------------------------------------------
+
+
+def look_panels(ctx: Context) -> list[str]:
+    """Panels drawn in this context's look (scenes can override the comic's look)."""
+    st = ctx.store
+    look = st.look_dir.name
+    return [p.id for p in st.shotlist().panels if st.panel_look(p.id) == look]
+
+
+def art_panels(ctx: Context) -> list[str]:
+    """Panels the per-panel stage draws: this look's, minus screen inserts (code-drawn)."""
+    st = ctx.store
+    devices = {p.id for p in st.props().props if p.screens}
+    mine = set(look_panels(ctx))
+    out = []
+    for panel in st.shotlist().panels:
+        if panel.id not in mine:
+            continue
+        if panel.shot == "insert" and any(pp.prop in devices for pp in panel.props):
+            continue
+        if ctx.only is None or panel.id in ctx.only:
+            out.append(panel.id)
+    return out
+
+
+def look_characters(ctx: Context) -> list[str]:
+    """Characters who appear in this look's panels (only they need reference drawings)."""
+    mine = set(look_panels(ctx))
+    seen: dict[str, None] = {}
+    for panel in ctx.store.shotlist().panels:
+        if panel.id in mine:
+            for c in panel.characters:
+                seen[c.character] = None
+    return [c for c in ctx.store.character_ids() if c in seen]
+
+
+def _panel(ctx: Context, pid: str):
+    return next(p for p in ctx.store.shotlist().panels if p.id == pid)
+
+
+def _panel_canvas(ctx: Context, pid: str) -> svg.Canvas:
+    w, h = svg.view_box(ctx.store.guide_path(pid).read_text("utf-8"))
+    return svg.Canvas(round(w), round(h))
+
+
+def _panel_check(ctx: Context, pid: Item, art: SvgArt) -> list[str]:
+    anchors = tuple(f"data-{k}-{c.character}" for c in _panel(ctx, pid).characters
+                    for k in ("head", "hand"))
+    return svg.validate(art.svg, _panel_canvas(ctx, pid), anchors=anchors)
+
+
+def _panel_context(ctx: Context, pid: Item) -> dict:
+    st, panel = ctx.store, _panel(ctx, pid)
+    chars = [c.character for c in panel.characters]
+    return {
+        "guide": st.guide_path(pid).read_text("utf-8"),
+        "panel": yamlio.dumps(panel.model_dump(mode="json", exclude={"text"})),
+        "text": [t.text for t in panel.text],
+        "characters": {c: st.text(Character, c) for c in chars},
+        "models": {c: st.character_model_path(c).read_text("utf-8") for c in chars},
+        "set": st.text(Set, panel.set),
+        "props": yamlio.dumps([p.model_dump(mode="json") for p in st.props().props
+                               if p.id in {pp.prop for pp in panel.props}]),
+        "style": _palettes(ctx, "base", "device", f"set-{panel.set}",
+                           *(f"character-{c}" for c in chars)),
+        "guidance": _art_guidance(ctx, "panel-art"),
+        "canvas": _panel_canvas(ctx, pid),
+    }
+
+
+PANEL_ART = LLMStage(
+    name="panel-art", output_type=SvgArt, check=_panel_check, finalize=clean_svg,
+    content=lambda art: art.svg, max_tokens=32_000,
+    items=art_panels,
+    output=lambda ctx, pid: ctx.store.panel_art_path(pid),
+    inputs=lambda ctx, pid: [ctx.store.guide_path(pid), *_art_inputs(ctx),
+                             ctx.store.path(Set, _panel(ctx, pid).set), ctx.store.path(Props),
+                             *(p for c in _panel(ctx, pid).characters for p in
+                               (ctx.store.path(Character, c.character),
+                                ctx.store.character_model_path(c.character)))],
+    context=_panel_context,
+)
+
+
+class ForMethod:
+    """Runs a stage only for looks whose art pack uses the given method."""
+
+    def __init__(self, stage, method: str):
+        self.stage, self.method, self.name = stage, method, stage.name
+
+    def jobs(self, ctx: Context) -> list[Job]:
+        return self.stage.jobs(ctx) if ctx.store.art().method == self.method else []
+
+
+LOOK_STAGES = [LookStage(), STYLE, FontsStage(), CHARACTER_MODEL,
+               ForMethod(PANEL_ART, "per-panel"),
+               ForMethod(CHARACTER_POSE, "composite"), ForMethod(SET_BACKDROP, "composite"),
+               ForMethod(PROP_ART, "composite")]
+
+
+def proof_panels(ctx: Context, count: int = 3) -> list[str]:
+    """Representative panels for a spot check: greedy coverage of sets, characters, and
+    shot scale, preferring panels that show more at once."""
+    st = ctx.store
+    drawable = {pid for look in st.looks()
+                for pid in art_panels(Context(ctx.project, look=look))}
+    candidates = [p for p in st.shotlist().panels if p.id in drawable]
+    scale = {"establishing": "wide", "wide": "wide", "medium": "medium",
+             "over-the-shoulder": "medium", "close-up": "close", "extreme-close-up": "close",
+             "insert": "insert"}
+
+    def features(p) -> set[str]:
+        return ({f"set:{p.set}", f"shot:{scale.get(p.shot, p.shot)}",
+                 f"look:{st.panel_look(p.id)}"}
+                | {f"char:{c.character}" for c in p.characters})
+
+    chosen, covered = [], set()
+    while candidates and len(chosen) < count:
+        best = max(candidates, key=lambda p: (len(features(p) - covered), len(p.characters)))
+        chosen.append(best.id)
+        covered |= features(best)
+        candidates.remove(best)
+    return chosen

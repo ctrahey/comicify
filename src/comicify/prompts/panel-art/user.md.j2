@@ -1,0 +1,40 @@
+{% from "_shared/yaml_block.j2" import block %}
+# The panel
+
+```yaml
+{{ panel }}
+```
+{% if text %}
+
+Words lettered in this panel later (for acting and mood only — do not draw them):
+{% for t in text %}
+- "{{ t }}"
+{% endfor %}
+{% endif %}
+
+# Composition guide (match this staging)
+
+```svg
+{{ guide }}
+```
+{{ block("Set", set) }}
+{% if props.strip() != "[]" %}
+{{ block("Props in this panel", props) }}
+{% endif %}
+{{ block("Palettes and pens", style) }}
+{% for cid, profile in characters.items() %}
+
+# Character `{{ cid }}`
+
+```yaml
+{{ profile }}
+```
+
+Reference drawing (match this character's look):
+
+```svg
+{{ models[cid] }}
+```
+{% endfor %}
+
+Draw the finished panel.

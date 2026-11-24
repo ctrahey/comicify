@@ -5,4 +5,13 @@
 {{ block("Cast", cast) }}
 {{ block("Narrative pattern", pattern) }}
 
+{% if editorial %}
+
+# Editorial directions (accepted by the author — apply every one)
+
+{% for d in editorial %}
+- {{ d }}
+{% endfor %}
+{% endif %}
+
 Write the story.

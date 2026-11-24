@@ -21,7 +21,9 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from ..models import Brief, Character, CinematographyPack, Comic, Composition, Props, ShotList
+from ..models import (
+    Brief, Character, CinematographyPack, Comic, Composition, Props, Set, ShotList,
+)
 from ..models.composition import (
     CameraFrame,
     FigurePlacement,
@@ -33,11 +35,14 @@ from ..models.composition import (
 from ..models.direction import CaptionPlacement, FrameBreaks, LetteringFlow, LetteringZone
 from ..models.shotlist import Angle, Panel, Shot, TextElement, TextKind
 from ..render import text as tx
-from ..render.geometry import CLOSE_SHOTS, Box, figure, insert_screen, page_size, panel_frames
+from ..render.geometry import (
+    CLOSE_SHOTS, PLANE_SCALE, Box, figure, horizon_for, insert_screen, page_size, panel_frames,
+    plane_ground,
+)
 from ..fonts import REGISTRY
 from .core import Context, Job, Output
 
-VERSION = 4
+VERSION = 5
 
 SPEECH = {TextKind.SPEECH, TextKind.THOUGHT, TextKind.WHISPER, TextKind.SHOUT}
 BACKDROP_ZOOM = {
@@ -77,6 +82,7 @@ class PanelSolver:
     dims: dict[str, tuple[float, float]]  # character → (relative height, width ratio)
     holders: dict[str, str]  # prop id → holding character
     screen_box: Box | None  # insert-shot screen, normalized
+    horizon: float = 0.6  # set horizon, before the camera angle
     notes: list[str] = field(default_factory=list)
 
     @property
@@ -150,7 +156,20 @@ class PanelSolver:
             return []
         figs = {c.character: FigurePlacement(
             character=c.character, x=c.placement.x, ground=c.placement.y,
-            scale=c.placement.scale, stance=c.stance, facing=c.facing) for c in p.characters}
+            scale=c.placement.scale, stance=c.stance, plane=c.plane, facing=c.facing)
+            for c in p.characters}
+
+        # Depth: planes set size and where feet meet the ground (between horizon and
+        # frame bottom), so figures aren't lined up on one baseline.
+        if p.shot not in CLOSE_SHOTS:
+            hz = horizon_for(self.horizon, p.angle)
+            planes = {str(f.plane) for f in figs.values()}
+            for f in figs.values():
+                want = plane_ground(f.plane, hz)
+                if len(planes) > 1 or str(f.plane) != "midground":
+                    f.ground = round(max(f.ground, want) if str(f.plane) == "foreground"
+                                     else want if abs(f.ground - want) > 0.12 else f.ground, 3)
+                f.scale = round(f.scale * PLANE_SCALE[str(f.plane)], 3)
 
         # Reading order: the first to speak stands on the left.
         speakers = list(dict.fromkeys(t.speaker for t in sorted(p.text, key=lambda t: t.order)
@@ -273,6 +292,7 @@ class PanelSolver:
             focus=NPoint(x=round(sum(f.x for f in figures) / len(figures), 3) if figures
                          else 0.5, y=BACKDROP_FOCUS_Y[p.angle]))
         return PanelComposition(panel=p.id, aspect=round(self.aspect, 4), camera=camera,
+                                horizon=round(horizon_for(self.horizon, p.angle), 3),
                                 figures=figures, letters=letters, notes=self.notes)
 
     def place_caption(self, w: float, h: float, placed: list[Placed]) -> tuple[Box, bool]:
@@ -385,7 +405,8 @@ def _nbox(b: Box) -> NBox:
 
 
 def compose_plan(brief: Brief, comic: Comic, cine: CinematographyPack, shotlist: ShotList,
-                 dims: dict[str, tuple[float, float]], props: Props) -> Composition:
+                 dims: dict[str, tuple[float, float]], props: Props,
+                 horizons: dict[str, float] | None = None) -> Composition:
     frames = panel_frames(brief, comic, cine)
     _, page_h = page_size(brief)
     scale = page_h / 1080
@@ -403,7 +424,7 @@ def compose_plan(brief: Brief, comic: Comic, cine: CinematographyPack, shotlist:
                 for pp in panel.props):
             screen = insert_screen(bool(panel.text), frame.w / frame.h)
         solver = PanelSolver(panel, i, frame.w, frame.h, scale, cine.lettering, dims,
-                             dict(holders), screen)
+                             dict(holders), screen, (horizons or {}).get(panel.set, 0.6))
         panels.append(solver.solve())
         holders = {}
     return Composition(panels=panels)
@@ -423,11 +444,13 @@ class CompositionStage:
     def jobs(self, ctx: Context) -> list[Job]:
         st = ctx.store
         inputs = [st.path(ShotList), st.path(Comic), st.path(Brief), st.path(CinematographyPack),
-                  st.path(Props), *(st.path(Character, c) for c in st.character_ids())]
+                  st.path(Props), *(st.path(Character, c) for c in st.character_ids()),
+                  *(st.path(Set, s) for s in st.set_ids())]
 
         def produce() -> Output:
+            horizons = {s: st.set(s).horizon for s in st.set_ids()}
             return Output(compose_plan(st.brief(), st.comic(), st.cinematography(),
-                                       st.shotlist(), character_dims(st), st.props()))
+                                       st.shotlist(), character_dims(st), st.props(), horizons))
 
         return [Job(stage=self.name, key=self.name, output=st.path(Composition),
                     produced_by=f"composition@code-v{VERSION}", inputs=inputs,

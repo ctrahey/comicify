@@ -19,8 +19,30 @@ class BeatKind(StrEnum):
     PUNCHLINE = "punchline"  # comedic or ironic payoff
 
 
+class Act(Model):
+    """A major movement of the story. Acts start on a new page with a title."""
+
+    id: Slug
+    title: str = Field(description="Short title shown at the act's start, e.g. 'A Better Way'.")
+    objective: str = Field(
+        description="What the reader should understand by the end of this act.")
+
+
+class Scene(Model):
+    """A continuous stretch in one place and time. Scenes start on a new row."""
+
+    id: Slug
+    act: Slug
+    title: str
+    set: Slug
+    look: Slug | None = Field(
+        default=None, description="Art pack id for this scene, if it differs from the comic's.")
+
+
 class Beat(Model):
     id: Slug
+    act: Slug = Field(default="act-1", description="Act id this beat belongs to.")
+    scene: Slug = Field(default="scene-1", description="Scene id this beat belongs to.")
     slot: Slug = Field(description="The narrative pattern's beat slot this beat fills.")
     kind: BeatKind
     name: str = Field(description="Short label, e.g. 'The nap'.")
@@ -40,4 +62,12 @@ class Story(Artifact):
     logline: str
     arc: str = Field(description="One-paragraph synopsis of the whole arc.")
     takeaway: str = Field(description="The moral / product insight as the reader should feel it.")
+    acts: list[Act] = Field(default_factory=list, description="In order. At least one.")
+    scenes: list[Scene] = Field(default_factory=list, description="In order. At least one.")
     beats: list[Beat]
+
+    def act_of(self, beat_id: str) -> str | None:
+        return next((b.act for b in self.beats if b.id == beat_id), None)
+
+    def scene_of(self, beat_id: str) -> str | None:
+        return next((b.scene for b in self.beats if b.id == beat_id), None)

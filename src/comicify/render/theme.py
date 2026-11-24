@@ -94,7 +94,14 @@ class Theme:
 
     def panel_border(self, scale: float) -> Paint | None:
         w = self.art.panel.border_px * scale
-        return Paint(stroke=self.ink, width=w) if w > 0.2 else None
+        return Paint(stroke=self.art.panel.border or self.ink, width=w) if w > 0.2 else None
+
+    @property
+    def dark(self) -> bool:
+        """A dark look (light ink on a dark field)."""
+        h = self.paper.lstrip("#")
+        r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.35
 
     def gutter(self, scale: float) -> float:
         return self.cine.grid.gutter_px * scale

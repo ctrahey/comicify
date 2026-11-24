@@ -40,7 +40,9 @@ def direction_stage(author_inputs, author_context) -> LLMStage[Direction]:
 
 
 def _vendor_job(ctx: Context, stage: str, axis: Axis) -> Job:
-    source = resolve(ctx.project, axis, ctx.store.direction().choice(axis).id)
+    pack_id = ctx.store.look_dir.name if axis == Axis.ART else \
+        ctx.store.direction().choice(axis).id
+    source = resolve(ctx.project, axis, pack_id)
     return Job(
         stage=stage,
         key=f"{stage}:{axis}={source.id}",

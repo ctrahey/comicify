@@ -1,0 +1,30 @@
+{% from "_shared/yaml_block.j2" import block %}
+{{ block("Brief", brief) }}
+{{ block("Subject product", product) }}
+{{ block("Story (acts with objectives, scenes, beats)", story) }}
+
+# Script (panel by panel)
+
+```
+{{ shotlist }}
+```
+{% if lints %}
+
+# Automated checks already flagged
+
+```yaml
+{% for n in lints %}
+- {{ n.principle }} · {{ n.targets | join(", ") }}: {{ n.problem }}
+{% endfor %}
+```
+{% endif %}
+{% if prior %}
+
+# Earlier editorial decisions (settled)
+
+{% for d in prior %}
+- {{ d.decision }}: [{{ d.note.principle }}] {{ d.note.targets | join(", ") }} — {{ d.direction }}
+{% endfor %}
+{% endif %}
+
+Review the script.

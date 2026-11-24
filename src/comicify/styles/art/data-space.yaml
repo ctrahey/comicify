@@ -1,0 +1,88 @@
+schema_version: 1
+id: data-space
+name: Holographic Data-Space
+summary: 'A virtual world inside software: deep navy void, glowing cyan and magenta wireframe and light-trails,
+  translucent holographic panels, a perspective grid floor. Data is light moving through structure; external
+  systems are distinct glowing portals.'
+sources:
+  - 'Tron (1982) and Tron: Legacy (2010) production design'
+  - Data-visualization and UI 'holographic' conventions
+prompts:
+  - stage: panel-art
+    text: Data moves as small bright packets along glowing paths. Show where the data is in this 
+      step, what transforms it, and which external system it touches.
+method: per-panel
+abstraction: iconic
+line:
+  weight_px: 3.0
+  uniform: true
+  color: '#7EF9FF'
+color:
+  max_colors: 8
+  flat: true
+  anchors:
+    - '#0B1020'
+    - '#14213D'
+    - '#7EF9FF'
+    - '#FF4FD8'
+    - '#FFD166'
+    - '#E8FBFF'
+  guidance: Dark void backgrounds; luminous line colors; fills are translucent versions of the line 
+    colors (opacity 0.15–0.35). Warm gold only for the single most important datum in a panel.
+shading: 'No shading: light is emitted, not reflected. Bloom is added by the renderer.'
+lettering:
+  dialogue:
+    family: Space Mono
+    weight: 700
+    size: 24.0
+    uppercase: false
+  caption:
+    family: Space Mono
+    weight: 400
+    size: 21.0
+    uppercase: false
+  sfx:
+    family: Archivo Black
+    weight: 400
+    size: 54.0
+    uppercase: false
+  title:
+    family: Archivo Black
+    weight: 400
+    size: 56.0
+    uppercase: false
+  device:
+    family: Space Mono
+    weight: 700
+    size: 21.0
+    uppercase: false
+  balloon: rounded
+  balloon_fill: '#101A2E'
+  caption_fill: '#7EF9FF'
+  stroke_px: 2.5
+  tail: straight
+  caption_style: bar
+  padding_em: 0.55
+  emphasis_weight: 700
+  sfx_style:
+    fill: '#7EF9FF'
+    outline_px: 0.0
+    halo: '#0B1020'
+    halo_px: 8.0
+    shadow: '#FF4FD8'
+    shadow_px: 3.0
+    max_rotation_deg: 6.0
+    scale: 1.0
+panel:
+  border_px: 2.5
+  corner_radius_px: 6.0
+  paper: '#0B1020'
+  ink: '#E8FBFF'
+  border: '#1F6F8B'
+effects:
+  - kind: glow
+    radius_px: 5.0
+    strength: 0.9
+svg_notes: Draw with strokes and translucent fills on a dark field; trails as dashed or gradient 
+  paths; portals for external systems (email, Sage, phone) as glowing rings or doorways with simple 
+  icons; keep a consistent grid floor.

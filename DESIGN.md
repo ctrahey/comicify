@@ -294,6 +294,69 @@ page layer above all panels and gutters. Figure geometry is shared by solver
 and renderer (`render/geometry.py`), using structured facts: `stance` and the
 character's silhouette `width_ratio`.
 
+## Structure, fidelity, and proofs
+
+**Acts and scenes** are part of the story (`acts`, `scenes`, and each beat's
+`act`/`scene`). The author's own acts are mirrored; each act has a learning
+`objective`. Layout starts each act on a new page under its title and each
+scene on a new row (cinematography `grid.act_break` / `scene_break`).
+
+**Fidelity is a dial**, so iteration is cheap and finals are paid for once:
+
+| Fidelity | How | Cost |
+|---|---|---|
+| thumbnails (`render --thumbnails`) | code only: silhouettes from stance/height/width, horizon, props, real screens and lettering, panel numbers with shot/angle | free, ~2 s |
+| proof (`proof`) | finished art for a few representative panels (greedy coverage of sets, characters, shot scale), the rest as thumbnails, in context | a few panels |
+| final (`render`) | every panel | full |
+
+**Per-panel art** (art pack `method: per-panel`, the default): each panel is
+drawn whole by the model from its **guide** — `structured/guides/<panel>.svg`,
+the thumbnail with lettering zones marked — plus the reference drawings of
+the characters in it. Characters can interact and the camera can move; the
+drawing must carry `data-head-<id>`/`data-hand-<id>` anchors for balloon tails.
+Guides are one file per panel, so editing a panel redraws only that panel.
+Screen inserts stay code-drawn. `method: composite` keeps the older
+pose-sprite compositing.
+
+## Creative discipline: the script editor
+
+Generating a storyboard is transcription; editing makes it teach. After the
+storyboard is generated, `author` runs a **script-editor round** (and `edit`
+runs more):
+
+1. **Lints** (code) catch what rules can: a line that points at something the
+   reader never sees ("like this one!" with no insert), a scene that opens
+   without an establishing view, a panel carrying too many words.
+2. **Review** (LLM) reads the brief, the story (acts with learning
+   objectives), and the panel-by-panel script against a rubric from
+   multimedia-learning research and comics craft (`prompts/_shared/craft.md`):
+   show don't tell, one idea per panel, coherence, signaling, redundancy,
+   contiguity, segmenting, pre-training, dialogue economy, staging, pacing.
+   At most 10 concrete notes, each with targets, problem, and proposal.
+3. **The author decides** each note: accept, reject, or rewrite it.
+   Decisions are recorded in `sessions/<date>-NN-editorial.md`.
+4. Accepted directions become inputs to the story and shot-list stages, which
+   regenerate with them. Rejected notes are settled and not re-proposed.
+
+The same rubric is in the story and shot-list prompts, so fewer problems are
+made in the first place.
+
+## Depth and looks
+
+**Depth is staged, not hoped for.** Characters have a depth `plane`
+(foreground / midground / background); panels can name a `foreground`
+framing element and a `light` cue. The composition solver places planes
+between the horizon and the frame bottom and scales them; the camera angle
+moves the horizon. Guides draw it: perspective floor to a vanishing point,
+dark cropped foreground framing, figures shaded by depth, Dutch tilt. The
+panel-art prompt builds three planes, perspective, light, and acting on it.
+
+**Scenes can change look.** A scene's `look` (in `story.yaml`) overrides the
+comic's art style — e.g. `data-space` (holographic: glowing wireframe,
+bloom via the `glow` effect) for "inside the software" scenes. Each look has
+its own style, references, panel art, and lettering; look stages run once per
+look, scoped to its scenes.
+
 ## Implementation notes (from the first tracer pass)
 
 - **Stage framework** (`pipeline/core.py`): a stage expands into jobs; each job

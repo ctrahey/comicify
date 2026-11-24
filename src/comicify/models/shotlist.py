@@ -44,6 +44,14 @@ class Stance(StrEnum):
     LYING = "lying"
 
 
+class Plane(StrEnum):
+    """Depth layer: staging in depth is what keeps panels from looking flat."""
+
+    FOREGROUND = "foreground"  # close to camera, large, often cropped by the frame
+    MIDGROUND = "midground"
+    BACKGROUND = "background"  # far away, small, near the horizon
+
+
 class Facing(StrEnum):
     LEFT = "left"
     RIGHT = "right"
@@ -66,6 +74,7 @@ class CharacterInPanel(Model):
     expression: Slug
     stance: Stance = Field(default=Stance.STANDING,
                            description="Body height class of the pose; staging depends on it.")
+    plane: Plane = Field(default=Plane.MIDGROUND, description="Depth layer in the shot.")
     facing: Facing = Facing.VIEWER
     placement: Placement
     action: str | None = Field(default=None, description="What they're doing, for the record.")
@@ -115,6 +124,11 @@ class Panel(Model):
     props: list[PropInPanel] = Field(default_factory=list)
     text: list[TextElement] = Field(default_factory=list)
     weight: int = Field(default=1, ge=1, le=3, description="Relative visual importance / size.")
+    foreground: str | None = Field(
+        default=None, description="A framing element nearest the camera (a monitor edge, a "
+                                  "shoulder, a doorframe), if any.")
+    light: str | None = Field(
+        default=None, description="Key light and mood, e.g. 'warm window light from left'.")
 
 
 class ShotList(Artifact):

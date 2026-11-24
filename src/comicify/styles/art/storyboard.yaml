@@ -1,0 +1,73 @@
+schema_version: 1
+id: storyboard
+name: Storyboard (thumbnails)
+summary: 'Low-fidelity blocking: gray silhouettes, horizon lines, real lettering. Used for thumbnails
+  and as the composition guide for per-panel art; free to render.'
+sources:
+  - Film and comics storyboarding practice (thumbnails / blocking)
+prompts: []
+method: composite
+abstraction: iconic
+line:
+  weight_px: 2.0
+  uniform: true
+  color: '#3b3f45'
+color:
+  max_colors: 6
+  flat: true
+  anchors:
+    - '#f4f5f7'
+    - '#e3e5e8'
+    - '#9aa1a9'
+    - '#3b3f45'
+  guidance: ''
+shading: None.
+lettering:
+  dialogue:
+    family: Comic Neue
+    weight: 700
+    size: 28.0
+    uppercase: false
+  caption:
+    family: Comic Neue
+    weight: 700
+    size: 24.0
+    uppercase: false
+  sfx:
+    family: Bangers
+    weight: 400
+    size: 56.0
+    uppercase: false
+  title:
+    family: Bangers
+    weight: 400
+    size: 60.0
+    uppercase: false
+  device:
+    family: Work Sans
+    weight: 700
+    size: 24.0
+    uppercase: false
+  balloon: ellipse
+  balloon_fill: '#ffffff'
+  caption_fill: '#fff7d6'
+  stroke_px: 2.0
+  tail: wedge
+  caption_style: box
+  padding_em: 0.6
+  emphasis_weight: 700
+  sfx_style:
+    fill: ink
+    outline_px: 0.0
+    halo: '#ffffff'
+    halo_px: 8.0
+    shadow_px: 0.0
+    max_rotation_deg: 10.0
+    scale: 1.0
+panel:
+  border_px: 2.5
+  corner_radius_px: 0.0
+  paper: '#ffffff'
+  ink: '#3b3f45'
+effects: []
+svg_notes: ''

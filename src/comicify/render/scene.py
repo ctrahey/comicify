@@ -11,7 +11,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from ..fonts import FontFace
-from ..models.direction import Grain, Halftone, Misregister, Monochrome, Posterize, Wobble
+from ..models.direction import (
+    Glow, Grain, Halftone, Misregister, Monochrome, Posterize, Wobble,
+)
 
 
 @dataclass(frozen=True)
@@ -79,7 +81,7 @@ class Text:
     rotate: tuple[float, float, float] | None = None  # (degrees, cx, cy)
 
 
-GroupEffect = Monochrome | Posterize | Wobble | Misregister
+GroupEffect = Monochrome | Posterize | Wobble | Misregister | Glow
 
 
 @dataclass

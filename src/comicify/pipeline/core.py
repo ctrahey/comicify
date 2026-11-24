@@ -40,6 +40,7 @@ class Context:
     force: frozenset[str] = frozenset()
     workers: int = 4
     look: str | None = None  # defaults to the art style in structured/direction.yaml
+    only: frozenset[str] | None = None  # restrict per-panel stages to these panels (proofs)
 
     @property
     def store(self) -> Store:

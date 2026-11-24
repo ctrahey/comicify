@@ -22,7 +22,8 @@ PAGE_SIZES = {
     PageAspect.STRIP: (2400, 800),
 }
 MARGIN_PX = 40  # at 1080px page height
-TITLE_BAND_PX = 92  # first page only
+TITLE_BAND_PX = 92  # first page: comic title
+ACT_BAND_PX = 64  # pages where an act starts: act title
 
 # Height of a relative_height=1.0 figure as a fraction of panel height, per shot.
 FIGURE_SCALE = {
@@ -31,6 +32,21 @@ FIGURE_SCALE = {
 }
 CLOSE_SHOTS = {Shot.CLOSE_UP, Shot.EXTREME_CLOSE_UP}
 CLOSE_UP_HEAD_Y = 0.42  # where close-ups put the face, as a fraction of panel height
+# Depth planes: size and where figures stand, between the horizon and the frame bottom.
+PLANE_SCALE = {"foreground": 1.4, "midground": 1.0, "background": 0.6}
+PLANE_GROUND = {"foreground": 1.06, "midground": 0.72, "background": 0.25}  # of horizon→bottom
+# Camera angle moves the horizon: low cameras see more sky, high cameras more ground.
+ANGLE_HORIZON = {"eye-level": 1.0, "dutch": 1.0, "low": 1.35, "high": 0.45}
+
+
+def horizon_for(set_horizon: float, angle: str) -> float:
+    return max(0.08, min(0.95, set_horizon * ANGLE_HORIZON.get(str(angle), 1.0)))
+
+
+def plane_ground(plane: str, horizon: float) -> float:
+    return horizon + (1 - horizon) * PLANE_GROUND[str(plane)]
+
+
 # How tall a pose is relative to standing (drawings keep the same scale).
 STANCE_HEIGHT = {Stance.STANDING: 1.0, Stance.CROUCHING: 0.7, Stance.SITTING: 0.62,
                  Stance.LYING: 0.32}
@@ -81,7 +97,8 @@ def panel_frames(brief: Brief, comic: Comic, cine: CinematographyPack) -> dict[s
     margin, gutter = MARGIN_PX * s, cine.grid.gutter_px * s
     out = {}
     for index, page in enumerate(comic.pages):
-        top = margin + (TITLE_BAND_PX * s if index == 0 else 0)
+        top = margin + (TITLE_BAND_PX * s if index == 0 else 0) + (
+            ACT_BAND_PX * s if page.act_title else 0)
         area = Box(margin, top, width - 2 * margin, height - top - margin)
         cell_w = (area.w - gutter * (page.cols - 1)) / page.cols
         cell_h = (area.h - gutter * (page.rows - 1)) / page.rows

@@ -16,7 +16,7 @@ from typing import Literal
 from pydantic import Field
 
 from .base import Artifact, Model, Slug
-from .shotlist import Stance, TextKind
+from .shotlist import Plane, Stance, TextKind
 
 
 class NBox(Model):
@@ -43,6 +43,7 @@ class FigurePlacement(Model):
     ground: float = Field(ge=0, le=1.6, description="Where the feet are (may be below frame).")
     scale: float = Field(default=1.0, gt=0, le=4)
     stance: Stance = Stance.STANDING
+    plane: Plane = Plane.MIDGROUND
     facing: Literal["left", "right", "viewer", "away"] = "viewer"
 
 
@@ -63,6 +64,8 @@ class PanelComposition(Model):
     panel: Slug
     aspect: float = Field(gt=0, description="Panel width / height when solved.")
     camera: CameraFrame = Field(default_factory=CameraFrame)
+    horizon: float = Field(default=0.6, ge=-0.5, le=1.5,
+                           description="Horizon height in the panel (camera angle applied).")
     figures: list[FigurePlacement] = Field(default_factory=list)
     letters: list[LetterPlacement] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list, description="Decisions the solver made.")
